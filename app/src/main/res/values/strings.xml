@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">TripLogger</string>
+    <string name="trip_title">Title</string>
+    <string name="trip_date">Date</string>
+    <string name="trip_type">Trip Type</string>
+    <string name="trip_type_work">Work</string>
+    <string name="trip_type_personal">Personal</string>
+    <string name="trip_type_commute">Commute</string>
+    <string name="destination">Destination</string>
+    <string name="comment">Comment</string>
+    <string name="gps_location">GPS Location</string>
+    <string name="save_button">Save</string>
+    <string name="cancel_button">Cancel</string>
+</resources>
