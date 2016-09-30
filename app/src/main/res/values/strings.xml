@@ -7,6 +7,7 @@
     <string name="trip_type_personal">Personal</string>
     <string name="trip_type_commute">Commute</string>
     <string name="destination">Destination</string>
+    <string name="duration">Duration</string>
     <string name="comment">Comment</string>
     <string name="gps_location">GPS Location</string>
     <string name="save_button">Save</string>
