@@ -21,7 +21,7 @@ public class TripBaseHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         //Create the trips table
         db.execSQL("create table " + TripTable.NAME + "(" +
-                " _id integer primary key autoincrement, (" +
+                " _id integer primary key autoincrement, " +
                 TripTable.Cols.UUID + ", " +
                 TripTable.Cols.TITLE + ", " +
                 TripTable.Cols.DATE + ", " +
