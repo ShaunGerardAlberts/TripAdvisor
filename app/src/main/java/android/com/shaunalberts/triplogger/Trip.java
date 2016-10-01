@@ -1,17 +1,20 @@
 package android.com.shaunalberts.triplogger;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.UUID;
 
 /**
  * Shaun      29-September-2016        Initial
+ * Shaun      01-October-2016          Changed mTripType to int
  */
 public class Trip {
 
     private UUID mId;
     private String title;
     private Date mDate;
-    private String mTripType;
+    private int mTripType;//represents a int value from a list
     private String mDestination;
     private int mDuration;//assume this is in whole days
     private String mComment;
@@ -51,11 +54,11 @@ public class Trip {
         this.mDate = date;
     }
 
-    public String getTripType() {
+    public int getTripType() {
         return mTripType;
     }
 
-    public void setTripType(String tripType) {
+    public void setTripType(int tripType) {
         this.mTripType = tripType;
     }
 

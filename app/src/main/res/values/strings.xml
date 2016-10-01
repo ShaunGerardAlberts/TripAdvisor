@@ -3,6 +3,11 @@
     <string name="trip_title">Title</string>
     <string name="trip_date">Date</string>
     <string name="trip_type">Trip Type</string>
+    <string-array name="trip_types">
+        <item>Work</item>
+        <item>Personal</item>
+        <item>Commute</item>
+    </string-array>
     <string name="trip_type_work">Work</string>
     <string name="trip_type_personal">Personal</string>
     <string name="trip_type_commute">Commute</string>

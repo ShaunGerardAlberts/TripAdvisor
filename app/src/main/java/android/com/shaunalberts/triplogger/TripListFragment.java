@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 /**
@@ -45,7 +46,10 @@ public class TripListFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 //Toast.makeText(getActivity(), "clicked", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(getActivity(), TripActivity.class);//change this, encapsulate it
+                Trip trip = new Trip();
+                TripLab.get(getActivity()).addTrip(trip);
+                Intent intent = TripActivity.newIntent(getActivity(), trip.getId());
+                //Toast.makeText(getActivity(), "clicked " + trip.getId(), Toast.LENGTH_SHORT).show();
                 startActivity(intent);
             }
         });
@@ -98,13 +102,15 @@ public class TripListFragment extends Fragment {
             mTrip = trip;
             mTitleTextView.setText(mTrip.getTitle());
             mDestinationTextView.setText(mTrip.getDestination());
-            mDate.setText(mTrip.getDate().toString());
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/M/yyyy");
+            mDate.setText(sdf.format(mTrip.getDate()));
         }
 
         @Override
         public void onClick(View v) {
             //when user click a item in the list, get the trip id and intent
             Intent intent = TripActivity.newIntent(getActivity(), mTrip.getId());
+            //Toast.makeText(getActivity(), "clicked " + mTrip.getId(), Toast.LENGTH_SHORT).show();
             startActivity(intent);
         }
     }
@@ -126,6 +132,7 @@ public class TripListFragment extends Fragment {
 
         @Override
         public void onBindViewHolder(TripHolder holder, int position) {
+
             Trip trip = mTrips.get(position);
             holder.bindTrip(trip);
         }

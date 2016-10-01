@@ -25,7 +25,7 @@ public class TripCursorWrapper extends CursorWrapper{
         String uuidString = getString(getColumnIndex(TripTable.Cols.UUID));
         String title = getString(getColumnIndex(TripTable.Cols.TITLE));
         long date = getLong(getColumnIndex(TripTable.Cols.DATE));
-        String tripType = getString(getColumnIndex(TripTable.Cols.TRIP_TYPE));
+        int tripType = getInt(getColumnIndex(TripTable.Cols.TRIP_TYPE));
         String destination = getString(getColumnIndex(TripTable.Cols.DESTINATION));
         int duration = getInt(getColumnIndex(TripTable.Cols.DURATION));
         String comment = getString(getColumnIndex(TripTable.Cols.COMMENT));
