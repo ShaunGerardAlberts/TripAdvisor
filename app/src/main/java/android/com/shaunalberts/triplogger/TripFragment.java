@@ -105,8 +105,6 @@ public class TripFragment extends Fragment {
                 dialog.show(manager, DIALOG_DATE);
             }
         });
-//        SimpleDateFormat sdf = new SimpleDateFormat("dd/M/yyyy");
-//        mDateButton.setText(sdf.format(mTrip.getDate()));
         updateDate();
 
         //spinner item, tripType is an int -  representing an index value in the spinner list
@@ -203,19 +201,23 @@ public class TripFragment extends Fragment {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode != Activity.RESULT_OK) {
+        if (resultCode != Activity.RESULT_OK) {
             return;
         }
 
-        if (resultCode == REQUEST_DATE) {
+        if (requestCode == REQUEST_DATE) {
             Date date = (Date) data.getSerializableExtra(DatePickerFragment.EXTRA_DATE);
             mTrip.setDate(date);
+
            updateDate();
         }
     }
 
     public void updateDate() {
-        mDateButton.setText((mTrip.getDate().toString()));
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/M/yyyy");
+        String setDate = sdf.format(mTrip.getDate());
+//        mDateButton.setText(mTrip.getDate().toString());
+        mDateButton.setText(setDate);
     }
 
 }
