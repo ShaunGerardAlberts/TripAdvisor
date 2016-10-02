@@ -17,10 +17,12 @@ import java.util.List;
 
 /**
  * Shaun      30 September 2016        Initial
+ * Shaun      02-October-2016          Added listener for settings button
  */
 public class TripListFragment extends Fragment {
 
     private Button mLogButton;
+    private Button mSettingButton;
 
     private RecyclerView mTripRecyclerView;
     private TripAdapter mAdapter;
@@ -50,6 +52,16 @@ public class TripListFragment extends Fragment {
                 TripLab.get(getActivity()).addTrip(trip);
                 Intent intent = TripActivity.newIntent(getActivity(), trip.getId());
                 //Toast.makeText(getActivity(), "clicked " + trip.getId(), Toast.LENGTH_SHORT).show();
+                startActivity(intent);
+            }
+        });
+
+        //Setting Button
+        mSettingButton = (Button) v.findViewById(R.id.list_settings_button);
+        mSettingButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = SettingsActivity.newIntent(getActivity());
                 startActivity(intent);
             }
         });

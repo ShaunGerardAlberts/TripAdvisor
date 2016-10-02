@@ -57,7 +57,7 @@ public class TripLab {
     //get a list of all the trips
     public List<Trip> getTrips() {
         List<Trip> trips = new ArrayList<>();
-        TripCursorWrapper cursor = queryCrimes(null, null);
+        TripCursorWrapper cursor = queryTrip(null, null);
         try {
             cursor.moveToFirst();
             while (!cursor.isAfterLast()) {
@@ -72,7 +72,7 @@ public class TripLab {
 
     //using a given id, get the trip record
     public Trip getTrip(UUID id) {
-        TripCursorWrapper cursor = queryCrimes(
+        TripCursorWrapper cursor = queryTrip(
           TripTable.Cols.UUID + " = ?", new String[] {id.toString()}
         );
         try {
@@ -110,7 +110,7 @@ public class TripLab {
 
     //Performs a query, gets a cursor and wraps it with CursorWrapper.  This contains a getTrip()
     //method that opens up the cursor and returns a neat Trip object.
-    private TripCursorWrapper queryCrimes(String whereClause, String[] whereArgs) {
+    private TripCursorWrapper queryTrip(String whereClause, String[] whereArgs) {
         Cursor cursor = mDatabase.query(
                 TripTable.NAME,
                 null, // Columns - null selects all columns

@@ -1,9 +1,11 @@
 package android.com.shaunalberts.triplogger.database;
 
+import android.com.shaunalberts.triplogger.Setting;
 import android.com.shaunalberts.triplogger.Trip;
 import android.database.Cursor;
 import android.database.CursorWrapper;
 import android.com.shaunalberts.triplogger.database.TripDBSchema.TripTable;
+import android.com.shaunalberts.triplogger.database.TripDBSchema.SettingsTable;
 
 import java.util.Date;
 import java.util.UUID;
@@ -14,7 +16,10 @@ import java.util.UUID;
  *
  *
  * Shaun      29-September-2016        Initial
+ * Shaun      02-October-2016          Added getSetting() to return a Setting object from database
+ *
  */
+
 public class TripCursorWrapper extends CursorWrapper{
 
     public TripCursorWrapper(Cursor cursor) {
@@ -44,5 +49,22 @@ public class TripCursorWrapper extends CursorWrapper{
     }
 
     //For the User Profile(Settings), SettingsActivity
+    public Setting getSetting() {
+        String name = getString(getColumnIndex(SettingsTable.Cols.NAME));
+        int id = Integer.parseInt(getString(getColumnIndex(SettingsTable.Cols.ID)));
+        String email = getString(getColumnIndex(SettingsTable.Cols.EMAIL));
+        String gender = getString(getColumnIndex(SettingsTable.Cols.GENDER));
+        String comment = getString(getColumnIndex(SettingsTable.Cols.COMMENT));
+
+        Setting setting = new Setting();
+        setting.setStudentName(name);
+        setting.setIdNum(id);
+        setting.setEmail(email);
+        setting.setGender(gender);
+        setting.setComment(comment);
+
+        return setting;
+
+    }
 
 }

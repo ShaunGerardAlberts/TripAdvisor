@@ -213,6 +213,7 @@ public class TripFragment extends Fragment {
         }
     }
 
+    //Sets the text of the DateButton to the correctly formatted date
     public void updateDate() {
         SimpleDateFormat sdf = new SimpleDateFormat("dd/M/yyyy");
         String setDate = sdf.format(mTrip.getDate());
