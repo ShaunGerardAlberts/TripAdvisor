@@ -22,17 +22,17 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.UUID;
 /**
- * TripFragment, get added to the TripActivity.  Links with the fragment_trip_detail.xml.
+ * TripFragment, gets added to the TripActivity.  Links with the fragment_trip_detail.xml.
  *
  *
- * save and cancel functionality, date format, think about gps structure
+ * save and cancel functionality, think about gps structure
  *
  */
 
 /**
  * Shaun      30-September-2016        Initial
  * Shaun      01-October-2016          Set the text of the TripActivity
- * Shaun      02-October-2016          Add date selector with dialogs
+ * Shaun      02-October-2016          Add datePicker dialog with dialogs
  *
  */
 public class TripFragment extends Fragment {
@@ -216,7 +216,6 @@ public class TripFragment extends Fragment {
     public void updateDate() {
         SimpleDateFormat sdf = new SimpleDateFormat("dd/M/yyyy");
         String setDate = sdf.format(mTrip.getDate());
-//        mDateButton.setText(mTrip.getDate().toString());
         mDateButton.setText(setDate);
     }
 

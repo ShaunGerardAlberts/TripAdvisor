@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">TripLogger</string>
+    <!--For the Trip Details and Trip Details Activities -->
     <string name="trip_title">Title</string>
     <string name="trip_date">Date</string>
     <string name="date_picker_title">Date of Trip:</string>
@@ -17,4 +18,11 @@
     <string name="cancel_button">Cancel</string>
     <string name="log_button">Log</string>
     <string name="setting_button">Settings</string>
+    <!-- For the User Profile Activity(Setting) -->
+    <string name="settings_title">User Profile</string>
+    <string name="settings_name">Name :</string>
+    <string name="settings_id">ID :</string>
+    <string name="settings_email">E-Mail :</string>
+    <string name="settings_gender">Gender :</string>
+    <string name="settings_comment">Comment :</string>
 </resources>

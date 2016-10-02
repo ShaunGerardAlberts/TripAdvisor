@@ -42,4 +42,7 @@ public class TripCursorWrapper extends CursorWrapper{
 
         return trip;
     }
+
+    //For the User Profile(Settings), SettingsActivity
+
 }
