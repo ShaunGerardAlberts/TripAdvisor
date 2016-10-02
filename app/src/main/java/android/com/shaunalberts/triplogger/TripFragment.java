@@ -1,7 +1,10 @@
 package android.com.shaunalberts.triplogger;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -9,14 +12,19 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.UUID;
 /**
+ * TripFragment, get added to the TripActivity.  Links with the fragment_trip_detail.xml.
+ *
+ *
  * save and cancel functionality, date format, think about gps structure
  *
  */
@@ -24,15 +32,18 @@ import java.util.UUID;
 /**
  * Shaun      30-September-2016        Initial
  * Shaun      01-October-2016          Set the text of the TripActivity
+ * Shaun      02-October-2016          Add date selector with dialogs
  *
  */
 public class TripFragment extends Fragment {
 
-    public static final String ARG_TRIP_ID = "trip_id";
+    private static final String ARG_TRIP_ID = "trip_id";
+    private static final String DIALOG_DATE = "DialogDate";//for the dateDialog(DatePickerDialog)
+    private static final int REQUEST_DATE = 0;//used when setting target of the dialog
 
     private Trip mTrip;
     private EditText mTitleField;
-    private EditText mDateField;
+    private Button mDateButton;
     private EditText mDestinationField;
     private EditText mDuration;
     private EditText mComment;
@@ -81,15 +92,22 @@ public class TripFragment extends Fragment {
         });
 
         //Date - EditText
-        mDateField = (EditText) v.findViewById(R.id.trip_date_edit_text);
-        mDateField.setOnClickListener(new View.OnClickListener() {//***************************************
+        mDateButton = (Button) v.findViewById(R.id.trip_date_edit_text);
+        //display DatePickerDialog when user pressed button
+        mDateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getContext(), "Pressed date EditText", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getContext(), "Pressed date dateButton", Toast.LENGTH_SHORT).show();
+                FragmentManager manager = getFragmentManager();
+                //DatePickerFragment dialog = new DatePickerFragment();
+                DatePickerFragment dialog = DatePickerFragment.newInstance(mTrip.getDate());
+                dialog.setTargetFragment(TripFragment.this, REQUEST_DATE);
+                dialog.show(manager, DIALOG_DATE);
             }
         });
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/M/yyyy");
-        mDateField.setText(sdf.format(mTrip.getDate()));
+//        SimpleDateFormat sdf = new SimpleDateFormat("dd/M/yyyy");
+//        mDateButton.setText(sdf.format(mTrip.getDate()));
+        updateDate();
 
         //spinner item, tripType is an int -  representing an index value in the spinner list
         mTripTypeSpinner = (Spinner) v.findViewById(R.id.trip_type_spinner);
@@ -181,6 +199,23 @@ public class TripFragment extends Fragment {
     public void onPause() {
         super.onPause();
         TripLab.get(getActivity()).updateTrip(mTrip);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode != Activity.RESULT_OK) {
+            return;
+        }
+
+        if (resultCode == REQUEST_DATE) {
+            Date date = (Date) data.getSerializableExtra(DatePickerFragment.EXTRA_DATE);
+            mTrip.setDate(date);
+           updateDate();
+        }
+    }
+
+    public void updateDate() {
+        mDateButton.setText((mTrip.getDate().toString()));
     }
 
 }

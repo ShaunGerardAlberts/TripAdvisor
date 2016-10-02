@@ -2,15 +2,13 @@
     <string name="app_name">TripLogger</string>
     <string name="trip_title">Title</string>
     <string name="trip_date">Date</string>
+    <string name="date_picker_title">Date of Trip:</string>
     <string name="trip_type">Trip Type</string>
     <string-array name="trip_types">
         <item>Work</item>
         <item>Personal</item>
         <item>Commute</item>
     </string-array>
-    <string name="trip_type_work">Work</string>
-    <string name="trip_type_personal">Personal</string>
-    <string name="trip_type_commute">Commute</string>
     <string name="destination">Destination</string>
     <string name="duration">Duration</string>
     <string name="comment">Comment</string>
