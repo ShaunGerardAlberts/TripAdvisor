@@ -10,6 +10,9 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 /**
+ * Still to do:  Only allow the SettingTable to contain one record, if it has a record, update when
+ * changed are attempted.
+ *
  * Shaun      02-October-2016          Initial
  * Shaun      03-October-2016          Add insert and update functionality
  */

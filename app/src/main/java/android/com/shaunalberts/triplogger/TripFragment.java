@@ -25,7 +25,7 @@ import java.util.UUID;
  * TripFragment, gets added to the TripActivity.  Links with the fragment_trip_detail.xml.
  *
  *
- * save and cancel functionality, think about gps structure
+ *Still to do: save and cancel functionality, think about gps structure
  *
  */
 
