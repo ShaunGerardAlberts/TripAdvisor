@@ -1,7 +1,6 @@
 package android.com.shaunalberts.triplogger;
 
 import android.com.shaunalberts.triplogger.database.TripCursorWrapper;
-import android.com.shaunalberts.triplogger.database.TripDBSchema;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -37,7 +36,7 @@ public class Setting {
     }
     
     public Setting() {
-        
+
     }
 
     public Setting(String name, int id, String gender, String comment) {
@@ -112,7 +111,7 @@ public class Setting {
     }
 
     public Setting getSetting() {
-        TripCursorWrapper cursor = queryTrip(null, null);
+        TripCursorWrapper cursor = querySettings(null, null);
         Setting setting = null;
         try {
             cursor.moveToFirst();
@@ -122,14 +121,15 @@ public class Setting {
         } finally {
             cursor.close();
         }
+
         return setting;
     }
 
     //Performs a query, gets a cursor and wraps it with CursorWrapper.  This contains a getTrip()
     //method that opens up the cursor and returns a neat Trip object.
-    private TripCursorWrapper queryTrip(String whereClause, String[] whereArgs) {
+    private TripCursorWrapper querySettings(String whereClause, String[] whereArgs) {
         Cursor cursor = mDatabase.query(
-                TripDBSchema.SettingsTable.NAME,
+                SettingsTable.NAME,
                 null, // Columns - null selects all columns
                 whereClause,
                 whereArgs,
@@ -141,3 +141,20 @@ public class Setting {
     }
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

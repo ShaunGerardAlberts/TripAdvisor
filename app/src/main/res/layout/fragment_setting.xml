@@ -25,7 +25,7 @@
         <EditText
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/settings_title_edit_view"
+            android:id="@+id/settings_name_edit_text"
             android:layout_weight="1"
             android:inputType="text"/>
     </LinearLayout>
@@ -45,7 +45,7 @@
         <EditText
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/settings_id_edit_view"
+            android:id="@+id/settings_id_edit_text"
             android:layout_weight="1"
             android:inputType="text"/>
     </LinearLayout>
@@ -109,4 +109,10 @@
             android:layout_weight="1"
             android:inputType="text"/>
     </LinearLayout>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/save_button"
+        android:id="@+id/settings_save_button"/>
 </LinearLayout>
