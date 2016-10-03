@@ -2,6 +2,7 @@ package android.com.shaunalberts.triplogger.database;
 
 /**
  * Shaun      29-September-2016        Initial
+ * Shaun      03-October-2016          Added UUID to SettingsTable
  */
 public class TripDBSchema {
 
@@ -24,6 +25,7 @@ public class TripDBSchema {
         public static final String NAME = "settings";
 
         public static final class Cols {
+            public static final String UUID = "uuid";
             public static final String NAME = "name";
             public static final String ID = "id";
             public static final String EMAIL = "email";

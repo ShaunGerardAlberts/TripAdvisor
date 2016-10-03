@@ -2,8 +2,6 @@ package android.com.shaunalberts.triplogger;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,15 +22,22 @@ public class SettingsFragment extends Fragment {
     private EditText mComment;
     private Button mSaveButton;
 
+    private Setting mSetting;
+
     public static SettingsFragment newInstance() {
         SettingsFragment settingsFragment = new SettingsFragment();
         return settingsFragment;
     }
 
     @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mSetting = SettingLab.get(getActivity()).getSetting("1");//put this in a static method
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_setting, container, false);
-
 
         //get links to EditText fields
         mNameField = (EditText) v.findViewById(R.id.settings_name_edit_text);
@@ -41,18 +46,12 @@ public class SettingsFragment extends Fragment {
         mGender = (EditText) v.findViewById(R.id.settings_gender_edit_text);
         mComment = (EditText) v.findViewById(R.id.settings_comment_edit_text);
 
-
-        //get a Setting object
-        Setting setting = new Setting();
-        try {
-            setting = setting.getSetting();//returns null if cursor is null(no value in steeingTable)
-            mNameField.setText(setting.getStudentName());
-            mIdNum.setText(setting.getIdNum());
-            mEmail.setText(setting.getEmail());
-            mGender.setText(setting.getGender());
-            mComment.setText(setting.getComment());
-        } catch (NullPointerException npe) {
-
+        if (mSetting != null) {
+            mNameField.setText(mSetting.getStudentName());
+            mIdNum.setText(mSetting.getIdNum());
+            mEmail.setText((mSetting.getEmail()));
+            mGender.setText(mSetting.getGender());
+            mComment.setText(mSetting.getComment());
         }
 
         //Save any changes made to User Profile
@@ -60,8 +59,14 @@ public class SettingsFragment extends Fragment {
         mSaveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                setting.setStudentName(mNameField.getText());
-
+                SettingLab settingLab = SettingLab.get(getActivity());
+                Setting fmSetting = new Setting();
+                fmSetting.setStudentName(mNameField.getText().toString());
+                fmSetting.setIdNum(mIdNum.getText().toString());
+                fmSetting.setEmail(mEmail.getText().toString());
+                fmSetting.setGender(mGender.getText().toString());
+                fmSetting.setComment(mComment.getText().toString());
+                settingLab.addSetting(fmSetting);
                 Toast.makeText(getContext(), "Saved", Toast.LENGTH_SHORT).show();
             }
         });

@@ -34,6 +34,7 @@ public class TripBaseHelper extends SQLiteOpenHelper {
         );
         //Create the settings table
         db.execSQL("create table " + SettingsTable.NAME + "(" +
+                SettingsTable.Cols.UUID + ", " +
                 SettingsTable.Cols.ID + ", " +
                 SettingsTable.Cols.NAME + ", " +
                 SettingsTable.Cols.EMAIL + ", " +

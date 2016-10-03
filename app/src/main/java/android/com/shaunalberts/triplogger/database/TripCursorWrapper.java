@@ -17,6 +17,7 @@ import java.util.UUID;
  *
  * Shaun      29-September-2016        Initial
  * Shaun      02-October-2016          Added getSetting() to return a Setting object from database
+ * Shaun      03-October-2016          Added UUID to SettingsTable
  *
  */
 
@@ -50,8 +51,9 @@ public class TripCursorWrapper extends CursorWrapper{
 
     //For the User Profile(Settings), SettingsActivity
     public Setting getSetting() {
+        String uuidString = getString(getColumnIndex(SettingsTable.Cols.UUID));
         String name = getString(getColumnIndex(SettingsTable.Cols.NAME));
-        int id = Integer.parseInt(getString(getColumnIndex(SettingsTable.Cols.ID)));
+        String id = getString(getColumnIndex(SettingsTable.Cols.ID));
         String email = getString(getColumnIndex(SettingsTable.Cols.EMAIL));
         String gender = getString(getColumnIndex(SettingsTable.Cols.GENDER));
         String comment = getString(getColumnIndex(SettingsTable.Cols.COMMENT));
