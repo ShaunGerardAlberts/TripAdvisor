@@ -14,7 +14,7 @@ import android.widget.Toast;
 /**
  * Still to do:  Only allow the SettingTable to contain one record, if it has a record, update when
  * changed are attempted.
- * <p/>
+ *
  * Shaun      02-October-2016          Initial
  * Shaun      03-October-2016          Add insert and update functionality
  * Shaun      04-October-2016          Only record can be entered, save changes save automatically - no button
@@ -29,7 +29,6 @@ public class SettingsFragment extends Fragment {
     private Button mSaveButton;
 
     private Setting mSetting;
-    private boolean existingRecord = false;
 
     public static SettingsFragment newInstance() {
         SettingsFragment settingsFragment = new SettingsFragment();
@@ -40,6 +39,18 @@ public class SettingsFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mSetting = SettingLab.get(getActivity()).getSetting("1");//put this in a static method
+        //if mSetting is null, there is no record in table, add blank record, the user can then
+        //update that.
+        if (mSetting == null) {
+            mSetting = new Setting();
+            mSetting.setStudentName("");
+            mSetting.setIdNum("");
+            mSetting.setEmail("");
+            mSetting.setGender("");
+            mSetting.setComment("");
+            SettingLab settingLab = SettingLab.get(getActivity());
+            settingLab.addSetting(mSetting);
+        }
     }
 
     @Override
@@ -53,50 +64,11 @@ public class SettingsFragment extends Fragment {
         mGender = (EditText) v.findViewById(R.id.settings_gender_edit_text);
         mComment = (EditText) v.findViewById(R.id.settings_comment_edit_text);
 
-        //***********************************************     Clean this code up *************/
-        //If mSetting is null, no record has been entered in the database yet.  When changing text
-        //in the edit fields, we are updating the mSetting object, this must always be initialised to
-        //something, therefor if no record then insert one with blank values.  Now we know that it is
-        // safe to only ever update when the overridden onPause() method called.
-        if (mSetting != null) {//there is a record in the table
-            existingRecord = true;
             mNameField.setText(mSetting.getStudentName());
             mIdNum.setText(mSetting.getIdNum());
             mEmail.setText((mSetting.getEmail()));
             mGender.setText(mSetting.getGender());
             mComment.setText(mSetting.getComment());
-        } else {//there is no record in the table
-            existingRecord = false;
-            //add a blank record that can be updated when user enters text
-//            Setting blankRecord = new Setting();
-//            blankRecord.setStudentName(" ");
-//            blankRecord.setIdNum(" ");
-//            blankRecord.setGender(" ");
-//            blankRecord.setEmail(" ");
-//            blankRecord.setComment(" ");
-//            SettingLab settingLab = SettingLab.get(getActivity());
-//            settingLab.addSetting(blankRecord);//insert blank record
-//            Setting mSetting = new Setting();
-//            mNameField.setText(mSetting.getStudentName());
-//            mIdNum.setText(mSetting.getIdNum());
-//            mEmail.setText((mSetting.getEmail()));
-//            mGender.setText(mSetting.getGender());
-//            mComment.setText(mSetting.getComment());
-            mNameField.setText("Student Name");
-            mIdNum.setText("Id Number");
-            mEmail.setText("Student Email");
-            mGender.setText("Gender");
-            mComment.setText("Comment");
-            mSetting = new Setting();
-            mSetting.setStudentName("Student Name");
-            mSetting.setIdNum("Id Number");
-            mSetting.setEmail("Student Email");
-            mSetting.setGender("Gender");
-            mSetting.setComment("Comment");
-            SettingLab settingLab = SettingLab.get(getActivity());
-            settingLab.addSetting(mSetting);
-        }
-        /***************************************************************************************/
 
 //        this.saveButtonPressed(v);
 
@@ -196,11 +168,7 @@ public class SettingsFragment extends Fragment {
     public void onPause() {
         super.onPause();
         SettingLab settingLab = SettingLab.get(getActivity());
-//        if (existingRecord) {
             settingLab.updateSetting(mSetting);
-//        } else {
-//            settingLab.addSetting(mSetting);
-//        }
     }
 
 //    private void saveButtonPressed(View v) {
