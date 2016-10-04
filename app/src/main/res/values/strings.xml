@@ -18,6 +18,7 @@
     <string name="cancel_button">Cancel</string>
     <string name="log_button">Log</string>
     <string name="setting_button">Settings</string>
+    <string name="delete_button">Delete</string>
     <!-- For the User Profile Activity(Setting) -->
     <string name="settings_title">User Profile</string>
     <string name="settings_name">Name :</string>

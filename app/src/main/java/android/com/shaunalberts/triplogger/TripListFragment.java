@@ -10,7 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -42,16 +41,18 @@ public class TripListFragment extends Fragment {
                              Bundle savedStateInstance) {
         View v = inflater.inflate(R.layout.fragment_trip_list, container, false);
 
-        //Log Button - Take user to clean TripActivity screen, where they can add a new trip
+        //Log Button - Take user to clean TripUpdateActivity screen, where they can add a new trip
         mLogButton = (Button) v.findViewById(R.id.list_log_button);
         mLogButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 //Toast.makeText(getActivity(), "clicked", Toast.LENGTH_SHORT).show();
-                Trip trip = new Trip();
-                TripLab.get(getActivity()).addTrip(trip);
-                Intent intent = TripActivity.newIntent(getActivity(), trip.getId());
-                //Toast.makeText(getActivity(), "clicked " + trip.getId(), Toast.LENGTH_SHORT).show();
+//                Trip trip = new Trip();
+//                TripLab.get(getActivity()).addTrip(trip);
+//                Intent intent = TripUpdateActivity.newIntent(getActivity(), trip.getId());
+//                //Toast.makeText(getActivity(), "clicked " + trip.getId(), Toast.LENGTH_SHORT).show();
+//                startActivity(intent);
+                Intent intent = TripNewActivity.newIntent(getActivity());
                 startActivity(intent);
             }
         });
@@ -121,7 +122,7 @@ public class TripListFragment extends Fragment {
         @Override
         public void onClick(View v) {
             //when user click a item in the list, get the trip id and intent
-            Intent intent = TripActivity.newIntent(getActivity(), mTrip.getId());
+            Intent intent = TripUpdateActivity.newIntent(getActivity(), mTrip.getId());
             //Toast.makeText(getActivity(), "clicked " + mTrip.getId(), Toast.LENGTH_SHORT).show();
             startActivity(intent);
         }

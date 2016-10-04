@@ -2,13 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:orientation="vertical"
               android:layout_width="match_parent"
-              android:layout_height="match_parent">
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/settings_title"
-        android:id="@+id/settings_title_text_view"/>
+              android:layout_height="wrap_content">
 
     <LinearLayout
         android:orientation="horizontal"
@@ -18,16 +12,15 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/settings_name"
-            android:id="@+id/settings_name_text_view"
+            android:text="@string/trip_title"
+            android:id="@+id/trip_title_label"
             android:layout_weight="1"/>
 
         <EditText
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/settings_name_edit_text"
-            android:layout_weight="1"
-            android:inputType="text"/>
+            android:id="@+id/trip_title_edit_text"
+            android:layout_weight="1"/>
     </LinearLayout>
 
     <LinearLayout
@@ -38,16 +31,17 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/settings_id"
-            android:id="@+id/settings_id_text_view"
+            android:text="@string/trip_date"
+            android:id="@+id/trip_date_label"
             android:layout_weight="1"/>
 
-        <EditText
+        <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/settings_id_edit_text"
-            android:layout_weight="1"
-            android:inputType="text"/>
+            android:inputType="date"
+            android:ems="10"
+            android:id="@+id/trip_date_edit_text"
+            android:layout_weight="1"/>
     </LinearLayout>
 
     <LinearLayout
@@ -58,16 +52,16 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/settings_email"
-            android:id="@+id/settings_email_text_view"
+            android:text="@string/trip_type"
+            android:id="@+id/textView2"
             android:layout_weight="1"/>
 
-        <EditText
+        <Spinner
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/settings_email_edit_text"
-            android:layout_weight="1"
-            android:inputType="textEmailAddress"/>
+            android:entries="@array/trip_types"
+            android:id="@+id/trip_type_spinner"
+            android:layout_weight="1"/>
     </LinearLayout>
 
     <LinearLayout
@@ -78,16 +72,15 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/settings_gender"
-            android:id="@+id/settings_gender_text_view"
+            android:text="@string/destination"
+            android:id="@+id/trip_destination_label"
             android:layout_weight="1"/>
 
         <EditText
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/settings_gender_edit_text"
-            android:layout_weight="1"
-            android:inputType="text"/>
+            android:id="@+id/trip_destination_edit_text"
+            android:layout_weight="1"/>
     </LinearLayout>
 
     <LinearLayout
@@ -98,16 +91,53 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/settings_comment"
-            android:id="@+id/settings_comment_text_view"
+            android:text="@string/duration"
+            android:id="@+id/trip_duration_label"
             android:layout_weight="1"/>
 
         <EditText
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/settings_comment_edit_text"
-            android:layout_weight="1"
-            android:inputType="text"/>
+            android:id="@+id/trip_duration_edit_text"
+            android:layout_weight="1"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/comment"
+            android:id="@+id/trip_comment_label"
+            android:layout_weight="1"/>
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/trip_comment_edit_text"
+            android:layout_weight="1"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/gps_location"
+            android:id="@+id/trip_gps_label"
+            android:layout_weight="1"/>
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/trip_gps_edit_text"
+            android:layout_weight="1"/>
     </LinearLayout>
 
 </LinearLayout>

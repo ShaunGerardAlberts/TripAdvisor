@@ -11,18 +11,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.UUID;
 /**
- * TripFragment, gets added to the TripActivity.  Links with the fragment_trip_detail.xml.
+ * TripUpdateFragment, gets added to the TripUpdateActivity.  Links with the fragment_trip_detail.xml.
  *
  *
  *Still to do: save and cancel functionality, think about gps structure
@@ -31,12 +28,13 @@ import java.util.UUID;
 
 /**
  * Shaun      30-September-2016        Initial
- * Shaun      01-October-2016          Set the text of the TripActivity
+ * Shaun      01-October-2016          Set the text of the TripUpdateActivity
  * Shaun      02-October-2016          Add datePicker dialog with dialogs
  * Shaun      04-October-2016          Duration causing app to crash, needs to be changed to String
+ * Shaun      04-October-2016          Renamed class from TripFragment to TripUpdateFragment
  *
  */
-public class TripFragment extends Fragment {
+public class TripUpdateFragment extends Fragment {
 
     private static final String ARG_TRIP_ID = "trip_id";
     private static final String DIALOG_DATE = "DialogDate";//for the dateDialog(DatePickerDialog)
@@ -51,11 +49,14 @@ public class TripFragment extends Fragment {
     private EditText mGPSLocation;
     private Spinner mTripTypeSpinner;
 
-    public static TripFragment newInstance(UUID tripId) {
+    //delete
+    private Button mDeleteButton;
+
+    public static TripUpdateFragment newInstance(UUID tripId) {
         Bundle args = new Bundle();
         args.putSerializable(ARG_TRIP_ID, tripId);
 
-        TripFragment fragment = new TripFragment();
+        TripUpdateFragment fragment = new TripUpdateFragment();
         fragment.setArguments(args);
         return fragment;
     }
@@ -102,7 +103,7 @@ public class TripFragment extends Fragment {
                 FragmentManager manager = getFragmentManager();
                 //DatePickerFragment dialog = new DatePickerFragment();
                 DatePickerFragment dialog = DatePickerFragment.newInstance(mTrip.getDate());
-                dialog.setTargetFragment(TripFragment.this, REQUEST_DATE);
+                dialog.setTargetFragment(TripUpdateFragment.this, REQUEST_DATE);
                 dialog.show(manager, DIALOG_DATE);
             }
         });
@@ -191,6 +192,18 @@ public class TripFragment extends Fragment {
         mGPSLocation = (EditText) v.findViewById(R.id.trip_gps_edit_text);
         mGPSLocation.setText(mTrip.getGpsLoction());
 
+
+        //Delete button
+        mDeleteButton = (Button) v.findViewById(R.id.trip_delete_button);
+        mDeleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                TripLab.get(getActivity()).deleteTrip(mTrip);
+                //take user back to TripListActivity
+                Intent intent = TripListActivity.newIntent(getContext());
+                startActivity(intent);
+            }
+        });
         return v;
     }
 

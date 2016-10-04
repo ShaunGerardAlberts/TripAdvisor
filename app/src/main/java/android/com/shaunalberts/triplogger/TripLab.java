@@ -20,6 +20,7 @@ import android.os.Environment;
  * the class to exist at a time.
  *
  * Shaun      29-September-2016        Initial
+ * Shaun      04-September-2016        Added delete function
  */
 public class TripLab {
 
@@ -121,6 +122,16 @@ public class TripLab {
                 null // orderBy
         );
         return new TripCursorWrapper(cursor);
+    }
+
+    //Delete a record
+    public void deleteTrip(Trip trip) {
+        String uuisString = trip.getId().toString();
+        mDatabase.delete(
+                TripTable.NAME,
+                TripTable.Cols.UUID + " = ?",
+                new String[] {uuisString}
+        );
     }
 
 }
