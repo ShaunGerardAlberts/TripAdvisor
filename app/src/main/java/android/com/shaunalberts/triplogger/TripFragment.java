@@ -33,6 +33,7 @@ import java.util.UUID;
  * Shaun      30-September-2016        Initial
  * Shaun      01-October-2016          Set the text of the TripActivity
  * Shaun      02-October-2016          Add datePicker dialog with dialogs
+ * Shaun      04-October-2016          Duration causing app to crash, needs to be changed to String
  *
  */
 public class TripFragment extends Fragment {
@@ -148,7 +149,7 @@ public class TripFragment extends Fragment {
 
         //Duration - EditText
         mDuration = (EditText) v.findViewById(R.id.trip_duration_edit_text);
-        mDuration.setText(String.valueOf(mTrip.getDuration()));
+        mDuration.setText(mTrip.getDuration());
         mDuration.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -157,7 +158,7 @@ public class TripFragment extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                mTrip.setDuration(Integer.valueOf(charSequence.toString()));
+                mTrip.setDuration(charSequence.toString());
             }
 
             @Override

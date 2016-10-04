@@ -18,6 +18,7 @@ import java.util.UUID;
  * Shaun      29-September-2016        Initial
  * Shaun      02-October-2016          Added getSetting() to return a Setting object from database
  * Shaun      03-October-2016          Added UUID to SettingsTable
+ * Shaun      04-October-2016          Make duration a String, make inserting easier
  *
  */
 
@@ -33,7 +34,7 @@ public class TripCursorWrapper extends CursorWrapper{
         long date = getLong(getColumnIndex(TripTable.Cols.DATE));
         int tripType = getInt(getColumnIndex(TripTable.Cols.TRIP_TYPE));
         String destination = getString(getColumnIndex(TripTable.Cols.DESTINATION));
-        int duration = getInt(getColumnIndex(TripTable.Cols.DURATION));
+        String duration = getString(getColumnIndex(TripTable.Cols.DURATION));
         String comment = getString(getColumnIndex(TripTable.Cols.COMMENT));
         String gpsLocation = getString(getColumnIndex(TripTable.Cols.GPS_LOCATION));
 

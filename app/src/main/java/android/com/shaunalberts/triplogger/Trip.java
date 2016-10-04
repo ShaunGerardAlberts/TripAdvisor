@@ -16,7 +16,7 @@ public class Trip {
     private Date mDate;
     private int mTripType;//represents a int value from a list
     private String mDestination;
-    private int mDuration;//assume this is in whole days
+    private String mDuration;//assume this is in whole days
     private String mComment;
     private String mGpsLocation;
 
@@ -70,11 +70,11 @@ public class Trip {
         this.mDestination = destination;
     }
 
-    public int getDuration() {
+    public String getDuration() {
         return mDuration;
     }
 
-    public void setDuration(int duration) {
+    public void setDuration(String duration) {
         this.mDuration = duration;
     }
 
