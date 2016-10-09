@@ -2,6 +2,9 @@ package android.com.shaunalberts.triplogger;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -13,11 +16,16 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.Toast;
 
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.UUID;
+import android.provider.MediaStore;
 /**
  * TripUpdateFragment, gets added to the TripUpdateActivity.  Links with the fragment_trip_detail.xml.
  *
@@ -32,6 +40,7 @@ import java.util.UUID;
  * Shaun      02-October-2016          Add datePicker dialog with dialogs
  * Shaun      04-October-2016          Duration causing app to crash, needs to be changed to String
  * Shaun      04-October-2016          Renamed class from TripFragment to TripUpdateFragment
+ * Shaun      09-October-2016          Add photo functionality
  *
  */
 public class TripUpdateFragment extends Fragment {
@@ -39,6 +48,7 @@ public class TripUpdateFragment extends Fragment {
     private static final String ARG_TRIP_ID = "trip_id";
     private static final String DIALOG_DATE = "DialogDate";//for the dateDialog(DatePickerDialog)
     private static final int REQUEST_DATE = 0;//used when setting target of the dialog
+    private static final int REQUEST_PHOTO = 1;
 
     private Trip mTrip;
     private EditText mTitleField;
@@ -48,6 +58,9 @@ public class TripUpdateFragment extends Fragment {
     private EditText mComment;
     private EditText mGPSLocation;
     private Spinner mTripTypeSpinner;
+    private ImageButton mPhotoButton;
+    private ImageView mPhotoView;
+    private File mPhotoFile;
 
     //delete
     private Button mDeleteButton;
@@ -66,6 +79,8 @@ public class TripUpdateFragment extends Fragment {
         super.onCreate(savedInstanceState);
         UUID tripId = (UUID) getArguments().getSerializable(ARG_TRIP_ID);
         mTrip = TripLab.get(getActivity()).getTrip(tripId);
+        //get location to photo file
+        mPhotoFile = TripLab.get(getActivity()).getPhotoFile(mTrip);
     }
 
     @Override
@@ -204,6 +219,38 @@ public class TripUpdateFragment extends Fragment {
                 startActivity(intent);
             }
         });
+
+        //Photo capture and display
+
+        //used to determine if the is a camera app available
+        PackageManager packageManager = getActivity().getPackageManager();
+
+        mPhotoButton = (ImageButton) v.findViewById(R.id.trip_camera_image_button);
+        mPhotoView = (ImageView) v.findViewById(R.id.trip_photo_image_view);
+
+        final Intent captureImage = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+
+        boolean canTakePhoto = mPhotoButton != null &&
+                captureImage.resolveActivity(packageManager) != null;
+        mPhotoButton.setEnabled(canTakePhoto);
+
+        //if camera app exists, tell intent to store photo in provided location
+        if (canTakePhoto) {
+            Uri uri = Uri.fromFile(mPhotoFile);
+            captureImage.putExtra(MediaStore.EXTRA_OUTPUT, uri);
+        }
+
+        //when photo button pressed fire off intent
+        mPhotoButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivityForResult(captureImage, REQUEST_PHOTO);
+                Toast.makeText(getContext(), "pressed", Toast.LENGTH_SHORT).show();
+            }
+        });
+        //display photo if available
+        updatePhotoView();
+
         return v;
     }
 
@@ -224,6 +271,8 @@ public class TripUpdateFragment extends Fragment {
             mTrip.setDate(date);
 
            updateDate();
+        } else if (requestCode == REQUEST_PHOTO) {
+            updatePhotoView();
         }
     }
 
@@ -232,6 +281,15 @@ public class TripUpdateFragment extends Fragment {
         SimpleDateFormat sdf = new SimpleDateFormat("dd/M/yyyy");
         String setDate = sdf.format(mTrip.getDate());
         mDateButton.setText(setDate);
+    }
+
+    private void updatePhotoView() {
+        if (mPhotoFile == null || !mPhotoFile.exists()) {
+            mPhotoView.setImageDrawable(null);
+        } else {
+            Bitmap bitmap = PictureUtils.getScaledBitmap(mPhotoFile.getPath(), getActivity());
+            mPhotoView.setImageBitmap(bitmap);
+        }
     }
 
 }

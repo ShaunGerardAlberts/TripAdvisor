@@ -101,8 +101,10 @@ public class TripLab {
         mDatabase.insert(TripTable.NAME, null, values);
     }
 
+    //Get file object pointing to correct location
     public File getPhotoFile(Trip trip) {
         File externalFilesDir = mContext.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        //Verify that there is external storage
         if (externalFilesDir == null) {
             return null;
         }
