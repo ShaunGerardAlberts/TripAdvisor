@@ -1,15 +1,20 @@
 package android.com.shaunalberts.triplogger;
 
 import android.app.Activity;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.location.Location;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,6 +31,14 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.UUID;
 import android.provider.MediaStore;
+
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
+import com.google.android.gms.common.GooglePlayServicesUtil;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationListener;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
 /**
  * TripUpdateFragment, gets added to the TripUpdateActivity.  Links with the fragment_trip_detail.xml.
  *
@@ -41,6 +54,7 @@ import android.provider.MediaStore;
  * Shaun      04-October-2016          Duration causing app to crash, needs to be changed to String
  * Shaun      04-October-2016          Renamed class from TripFragment to TripUpdateFragment
  * Shaun      09-October-2016          Add photo functionality
+ * Shaun      18-October-2016          Started with gps work
  *
  */
 public class TripUpdateFragment extends Fragment {
@@ -49,6 +63,8 @@ public class TripUpdateFragment extends Fragment {
     private static final String DIALOG_DATE = "DialogDate";//for the dateDialog(DatePickerDialog)
     private static final int REQUEST_DATE = 0;//used when setting target of the dialog
     private static final int REQUEST_PHOTO = 1;
+    //gps
+    private static final String TAG = "LocatorFragment";
 
     private Trip mTrip;
     private EditText mTitleField;
@@ -61,6 +77,9 @@ public class TripUpdateFragment extends Fragment {
     private ImageButton mPhotoButton;
     private ImageView mPhotoView;
     private File mPhotoFile;
+    //gps
+    private EditText mGps;
+    private GoogleApiClient mClient;
 
     //delete
     private Button mDeleteButton;
@@ -77,11 +96,47 @@ public class TripUpdateFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
         UUID tripId = (UUID) getArguments().getSerializable(ARG_TRIP_ID);
         mTrip = TripLab.get(getActivity()).getTrip(tripId);
         //get location to photo file
         mPhotoFile = TripLab.get(getActivity()).getPhotoFile(mTrip);
+
+        //create a client to use Play Services
+        mClient = new GoogleApiClient.Builder(getActivity()).addApi(LocationServices.API).build();
     }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        mClient.connect();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        mClient.disconnect();
+    }
+
+    //copying from textbook
+    private void getGPSLocation() {
+        LocationRequest request = LocationRequest.create();
+        request.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        request.setNumUpdates(1);
+        request.setInterval(0);
+        //send off request and listen for the Locations to come back
+        LocationServices.FusedLocationApi.requestLocationUpdates(mClient, request, new LocationListener() {
+            @Override
+            public void onLocationChanged(Location location) {
+                Log.i(TAG, "Got a fix: " + location);
+                Log.i(TAG, "Got longitude " + location.getLongitude());
+                Log.i(TAG, "Got latitude " + location.getLatitude());
+
+//                new SearchTask().execute(location);// ******************************************************
+            }
+        });
+    }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -206,6 +261,23 @@ public class TripUpdateFragment extends Fragment {
         //GPSLocation - EditText
         mGPSLocation = (EditText) v.findViewById(R.id.trip_gps_edit_text);
         mGPSLocation.setText(mTrip.getGpsLoction());
+        mGPSLocation.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                //blank
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                getGPSLocation();
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
 
 
         //Delete button
@@ -289,6 +361,15 @@ public class TripUpdateFragment extends Fragment {
         } else {
             Bitmap bitmap = PictureUtils.getScaledBitmap(mPhotoFile.getPath(), getActivity());
             mPhotoView.setImageBitmap(bitmap);
+        }
+    }
+
+    //inner AsyncTask, is a thread to download the image for google maps
+    private class SearchTask extends AsyncTask<Location,Void,Void> {//*******************************************
+
+        @Override
+        protected Void doInBackground(Location... params) {
+            return null;
         }
     }
 
