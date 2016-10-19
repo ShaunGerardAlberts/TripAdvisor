@@ -15,8 +15,8 @@ import java.util.UUID;
 /**
  * Shaun      29-September-2016        Initial
  * Shaun      04-October-2016          Renamed class from TripActivity to TripUpdateActivity
- * Shaun      18-October-2016          Started with gps work
- * Shaun      19-October-2016          Started with maps
+ * Shaun      18-October-2016          Added GPS
+ * Shaun      19-October-2016          Added Google Maps
  */
 
 public class TripUpdateActivity extends SingleFragmentActivity {

@@ -35,22 +35,14 @@ import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 /**
- * TripUpdateFragment, gets added to the TripUpdateActivity.  Links with the fragment_trip_detail.xml.
- *
- *
- *Still to do: save and cancel functionality, think about gps structure
- *
- */
-
-/**
  * Shaun      30-September-2016        Initial
  * Shaun      01-October-2016          Set the text of the TripUpdateActivity
  * Shaun      02-October-2016          Add datePicker dialog with dialogs
  * Shaun      04-October-2016          Duration causing app to crash, needs to be changed to String
  * Shaun      04-October-2016          Renamed class from TripFragment to TripUpdateFragment
  * Shaun      09-October-2016          Add photo functionality
- * Shaun      18-October-2016          Started with gps work
- * Shaun      19-October-2016          Started with maps
+ * Shaun      18-October-2016          Added GPS
+ * Shaun      19-October-2016          Added google map
  *
  */
 public class TripUpdateFragment extends Fragment implements GoogleApiClient.ConnectionCallbacks {
