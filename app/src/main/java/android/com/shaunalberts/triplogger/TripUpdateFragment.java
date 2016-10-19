@@ -100,7 +100,10 @@ public class TripUpdateFragment extends Fragment {
         mPhotoFile = TripLab.get(getActivity()).getPhotoFile(mTrip);
 
         //create a client to use Play Services
-        mClient = new GoogleApiClient.Builder(getActivity()).addApi(LocationServices.API).build();
+        mClient = new GoogleApiClient.Builder(getActivity())
+                .addApi(LocationServices.API)
+//                .addConnectionCallbacks(getActivity())
+                .build();
     }
 
     @Override
@@ -117,6 +120,27 @@ public class TripUpdateFragment extends Fragment {
 
     //copying from textbook
     private void getGPSLocation() {
+        LocationRequest request = LocationRequest.create();
+        request.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        request.setNumUpdates(1);
+        request.setInterval(0);
+        //send off request and listen for the Locations to come back
+        LocationServices.FusedLocationApi.requestLocationUpdates(mClient, request, new LocationListener() {
+            @Override
+            public void onLocationChanged(Location location) {
+                Log.i(TAG, "Got a fix: " + location);
+                Log.i(TAG, "Got longitude " + location.getLongitude());
+                Log.i(TAG, "Got latitude " + location.getLatitude());
+                String gpsCord = location.getLongitude() + ";" + location.getLatitude();
+                mGPSLocation.setText(gpsCord);
+                mTrip.setGpsLocation(gpsCord);
+//                new SearchTask().execute(location);// ******************************************************
+            }
+        });
+    }
+
+//    @Override
+    public void onConnected(Bundle connectionHint) {
         LocationRequest request = LocationRequest.create();
         request.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
         request.setNumUpdates(1);
