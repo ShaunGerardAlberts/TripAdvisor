@@ -1,8 +1,6 @@
 package android.com.shaunalberts.triplogger;
 
 import android.app.Activity;
-import android.app.Dialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -32,9 +30,6 @@ import java.util.Date;
 import java.util.UUID;
 import android.provider.MediaStore;
 
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GoogleApiAvailability;
-import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
@@ -55,6 +50,7 @@ import com.google.android.gms.location.LocationServices;
  * Shaun      04-October-2016          Renamed class from TripFragment to TripUpdateFragment
  * Shaun      09-October-2016          Add photo functionality
  * Shaun      18-October-2016          Started with gps work
+ * Shaun      19-October-2016          Started with maps
  *
  */
 public class TripUpdateFragment extends Fragment {
@@ -72,12 +68,13 @@ public class TripUpdateFragment extends Fragment {
     private EditText mDestinationField;
     private EditText mDuration;
     private EditText mComment;
-    private EditText mGPSLocation;
+    private EditText mGPSLocation;//changed to a button
     private Spinner mTripTypeSpinner;
     private ImageButton mPhotoButton;
     private ImageView mPhotoView;
     private File mPhotoFile;
     //gps
+    private Button mGPSButton;
     private EditText mGps;
     private GoogleApiClient mClient;
 
@@ -131,7 +128,9 @@ public class TripUpdateFragment extends Fragment {
                 Log.i(TAG, "Got a fix: " + location);
                 Log.i(TAG, "Got longitude " + location.getLongitude());
                 Log.i(TAG, "Got latitude " + location.getLatitude());
-
+                String gpsCord = location.getLongitude() + ";" + location.getLatitude();
+                mGPSLocation.setText(gpsCord);
+                mTrip.setGpsLocation(gpsCord);
 //                new SearchTask().execute(location);// ******************************************************
             }
         });
@@ -260,22 +259,34 @@ public class TripUpdateFragment extends Fragment {
 
         //GPSLocation - EditText
         mGPSLocation = (EditText) v.findViewById(R.id.trip_gps_edit_text);
-        mGPSLocation.setText(mTrip.getGpsLoction());
-        mGPSLocation.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                //blank
-            }
+        mGPSLocation.setText(mTrip.getGpsLoction().toString());
+//        mGPSLocation.setText(mTrip.getGpsLoction());
+//        mGPSLocation.addTextChangedListener(new TextWatcher() {
+//            @Override
+//            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+//                //blank
+//            }
+//
+//            @Override
+//            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+//                getGPSLocation();
+//
+//            }
+//
+//            @Override
+//            public void afterTextChanged(Editable editable) {
+//
+//            }
+//        });
 
+        mGPSButton = (Button) v.findViewById(R.id.trip_gps_button);
+        mGPSButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            public void onClick(View view) {
                 getGPSLocation();
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-
+                //not sure how to start up the map
+                Intent mapIntent = MapHolidayActivity.newIntent(getContext(), mTrip.getId());
+                startActivity(mapIntent);
             }
         });
 
@@ -371,6 +382,10 @@ public class TripUpdateFragment extends Fragment {
         protected Void doInBackground(Location... params) {
             return null;
         }
+    }
+
+    private void updateMap() {
+
     }
 
 }

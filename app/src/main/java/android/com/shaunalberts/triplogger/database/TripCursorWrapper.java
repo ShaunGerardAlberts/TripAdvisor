@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.CursorWrapper;
 import android.com.shaunalberts.triplogger.database.TripDBSchema.TripTable;
 import android.com.shaunalberts.triplogger.database.TripDBSchema.SettingsTable;
+import android.location.Location;
 
 import java.util.Date;
 import java.util.UUID;

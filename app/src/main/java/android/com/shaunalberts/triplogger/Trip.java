@@ -1,5 +1,7 @@
 package android.com.shaunalberts.triplogger;
 
+import android.location.Location;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -8,6 +10,7 @@ import java.util.UUID;
 /**
  * Shaun      29-September-2016        Initial
  * Shaun      01-October-2016          Changed mTripType to int
+ * Shaun      19-October-2016          Added Location type for gps location
  */
 public class Trip {
 
@@ -19,6 +22,8 @@ public class Trip {
     private String mDuration;//assume this is in whole days
     private String mComment;
     private String mGpsLocation;
+    //gps
+    private Location mLocation;
 
     //Constructor
     public Trip() {
@@ -93,4 +98,12 @@ public class Trip {
     public void setGpsLocation(String gpsLocation) {
         this.mGpsLocation = gpsLocation;
     }
+
+//    public Location getLocation() {
+//        return mLocation;
+//    }
+//
+//    public void setLocation(Location location) {
+//        mLocation = location;
+//    }
 }

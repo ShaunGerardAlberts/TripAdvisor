@@ -16,6 +16,7 @@ import java.util.UUID;
  * Shaun      29-September-2016        Initial
  * Shaun      04-October-2016          Renamed class from TripActivity to TripUpdateActivity
  * Shaun      18-October-2016          Started with gps work
+ * Shaun      19-October-2016          Started with maps
  */
 
 public class TripUpdateActivity extends SingleFragmentActivity {
@@ -40,6 +41,7 @@ public class TripUpdateActivity extends SingleFragmentActivity {
     public void onResume() {
         super.onResume();
 
+        //Make sure that the app has Play store installed
         GoogleApiAvailability googleAPI = GoogleApiAvailability.getInstance();
 
         int errorCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(this);

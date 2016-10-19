@@ -19,6 +19,9 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <meta-data
+            android:name="com.google.android.maps.v2.API_KEY"
+            android:value="AIzaSyDA6_bCvPrX1lStsSV6mPj72Q4UY_q2c3Q"/>
         <activity android:name=".TripListActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -36,6 +39,10 @@
         <activity android:name=".TripNewActivity"
                   android:label="TripLogger">
         </activity>
+        <activity android:name=".MapHolidayActivity"
+                  android:label="MapHolidayActivity">
+        </activity>
+
     </application>
 
 </manifest>
