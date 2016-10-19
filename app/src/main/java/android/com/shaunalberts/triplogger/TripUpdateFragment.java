@@ -53,7 +53,7 @@ import com.google.android.gms.location.LocationServices;
  * Shaun      19-October-2016          Started with maps
  *
  */
-public class TripUpdateFragment extends Fragment {
+public class TripUpdateFragment extends Fragment implements GoogleApiClient.ConnectionCallbacks {
 
     private static final String ARG_TRIP_ID = "trip_id";
     private static final String DIALOG_DATE = "DialogDate";//for the dateDialog(DatePickerDialog)
@@ -102,7 +102,7 @@ public class TripUpdateFragment extends Fragment {
         //create a client to use Play Services
         mClient = new GoogleApiClient.Builder(getActivity())
                 .addApi(LocationServices.API)
-//                .addConnectionCallbacks(getActivity())
+                .addConnectionCallbacks(this)
                 .build();
     }
 
@@ -118,28 +118,28 @@ public class TripUpdateFragment extends Fragment {
         mClient.disconnect();
     }
 
-    //copying from textbook
-    private void getGPSLocation() {
-        LocationRequest request = LocationRequest.create();
-        request.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-        request.setNumUpdates(1);
-        request.setInterval(0);
-        //send off request and listen for the Locations to come back
-        LocationServices.FusedLocationApi.requestLocationUpdates(mClient, request, new LocationListener() {
-            @Override
-            public void onLocationChanged(Location location) {
-                Log.i(TAG, "Got a fix: " + location);
-                Log.i(TAG, "Got longitude " + location.getLongitude());
-                Log.i(TAG, "Got latitude " + location.getLatitude());
-                String gpsCord = location.getLongitude() + ";" + location.getLatitude();
-                mGPSLocation.setText(gpsCord);
-                mTrip.setGpsLocation(gpsCord);
-//                new SearchTask().execute(location);// ******************************************************
-            }
-        });
-    }
+//    //copying from textbook
+//    private void getGPSLocation() {
+//        LocationRequest request = LocationRequest.create();
+//        request.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+//        request.setNumUpdates(1);
+//        request.setInterval(0);
+//        //send off request and listen for the Locations to come back
+//        LocationServices.FusedLocationApi.requestLocationUpdates(mClient, request, new LocationListener() {
+//            @Override
+//            public void onLocationChanged(Location location) {
+//                Log.i(TAG, "Got a fix: " + location);
+//                Log.i(TAG, "Got latitude " + location.getLatitude());
+//                Log.i(TAG, "Got longitude " + location.getLongitude());
+//                String gpsCord = location.getLatitude() + ";" + location.getLongitude();
+//                mGPSLocation.setText(gpsCord);
+//                mTrip.setGpsLocation(gpsCord);
+////                new SearchTask().execute(location);// ******************************************************
+//            }
+//        });
+//    }
 
-//    @Override
+    @Override
     public void onConnected(Bundle connectionHint) {
         LocationRequest request = LocationRequest.create();
         request.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
@@ -150,9 +150,9 @@ public class TripUpdateFragment extends Fragment {
             @Override
             public void onLocationChanged(Location location) {
                 Log.i(TAG, "Got a fix: " + location);
-                Log.i(TAG, "Got longitude " + location.getLongitude());
-                Log.i(TAG, "Got latitude " + location.getLatitude());
-                String gpsCord = location.getLongitude() + ";" + location.getLatitude();
+                Log.i(TAG, "Got longitude " + location.getLongitude() + " should be -25.76");
+                Log.i(TAG, "Got latitude " + location.getLatitude() + " should be 28.29");
+                String gpsCord = location.getLatitude() + ";" + location.getLongitude();
                 mGPSLocation.setText(gpsCord);
                 mTrip.setGpsLocation(gpsCord);
 //                new SearchTask().execute(location);// ******************************************************
@@ -160,6 +160,10 @@ public class TripUpdateFragment extends Fragment {
         });
     }
 
+    @Override
+    public void onConnectionSuspended(int i) {
+
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -283,7 +287,11 @@ public class TripUpdateFragment extends Fragment {
 
         //GPSLocation - EditText
         mGPSLocation = (EditText) v.findViewById(R.id.trip_gps_edit_text);
-        mGPSLocation.setText(mTrip.getGpsLoction().toString());
+        try {
+            mGPSLocation.setText(mTrip.getGpsLoction().toString());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 //        mGPSLocation.setText(mTrip.getGpsLoction());
 //        mGPSLocation.addTextChangedListener(new TextWatcher() {
 //            @Override
@@ -307,7 +315,7 @@ public class TripUpdateFragment extends Fragment {
         mGPSButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getGPSLocation();
+                //getGPSLocation();
                 //not sure how to start up the map
                 Intent mapIntent = MapHolidayActivity.newIntent(getContext(), mTrip.getId());
                 startActivity(mapIntent);

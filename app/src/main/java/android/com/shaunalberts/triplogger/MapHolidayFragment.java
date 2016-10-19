@@ -67,8 +67,8 @@ public class MapHolidayFragment extends SupportMapFragment {
 
         try {
             String[] strArrLongLat = mTrip.getGpsLoction().split(";");
-            Double dblLong = Double.parseDouble(strArrLongLat[0]);
-            Double dblLat = Double.parseDouble(strArrLongLat[1]);
+            Double dblLat = Double.parseDouble(strArrLongLat[0]);
+            Double dblLong = Double.parseDouble(strArrLongLat[1]);
 
             Location buildLocation = new Location("Build Location");
             buildLocation.setLongitude(dblLong);
@@ -78,11 +78,16 @@ public class MapHolidayFragment extends SupportMapFragment {
             //LatLng locationPoint = new LatLng(mCurrentLocation.getLongitude(), mCurrentLocation.getLatitude());
             LatLng locationPoint = new LatLng(dblLat, dblLong);
             MarkerOptions itemMarket = new MarkerOptions().position(locationPoint);
+
             mMap.clear();
             mMap.addMarker(itemMarket);
-            LatLngBounds bounds = new LatLngBounds.Builder().include(locationPoint).build();
+
+            LatLngBounds bounds = new LatLngBounds.Builder()
+                    .include(locationPoint)
+                    .build();
 
             int margin = getResources().getDimensionPixelSize(R.dimen.map_inset_margin);
+
             CameraUpdate update = CameraUpdateFactory.newLatLngBounds(bounds, margin);
             mMap.animateCamera(update);
         } catch (NumberFormatException nfe) {
