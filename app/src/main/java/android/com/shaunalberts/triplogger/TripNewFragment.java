@@ -3,7 +3,11 @@ package android.com.shaunalberts.triplogger;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
@@ -12,9 +16,12 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import java.io.File;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -31,6 +38,7 @@ public class TripNewFragment extends Fragment {
 
     private static final String DIALOG_DATE = "TripNewFragment.DialogDate";//for the dateDialog(DatePickerDialog)
     private static final int REQUEST_DATE = 0;//used when setting target of the dialog
+    private static final int REQUEST_PHOTO = 1;
 
     private Trip mTrip;
     private EditText mTitleField;
@@ -40,6 +48,10 @@ public class TripNewFragment extends Fragment {
     private EditText mComment;
     private EditText mGPSLocation;
     private Spinner mTripTypeSpinner;
+
+    private ImageButton mPhotoButton;
+    private ImageView mPhotoView;
+    private File mPhotoFile;
 
     private Button mSaveButton;
 
@@ -51,9 +63,10 @@ public class TripNewFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
     }
 
+
+    boolean canTakePhoto = false;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -84,12 +97,41 @@ public class TripNewFragment extends Fragment {
 
         mTripTypeSpinner = (Spinner) v.findViewById(R.id.trip_type_spinner);
 
+        //***************************************************************** photo function
+        //Photo capture and display
+
+        //used to determine if the is a camera app available
+        PackageManager packageManager = getActivity().getPackageManager();
+
+        mPhotoButton = (ImageButton) v.findViewById(R.id.trip_camera_image_button);
+        mPhotoView = (ImageView) v.findViewById(R.id.trip_photo_image_view);
+
+        final Intent captureImage = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+
+        canTakePhoto = mPhotoButton != null && captureImage.resolveActivity(packageManager) != null;
+        mPhotoButton.setEnabled(canTakePhoto);
+
+        mTrip = new Trip();
+        mPhotoFile = TripLab.get(getActivity()).getPhotoFile(mTrip);
+        //when photo button pressed fire off intent
+        mPhotoButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Uri uri = Uri.fromFile(mPhotoFile);
+                captureImage.putExtra(MediaStore.EXTRA_OUTPUT, uri);
+                startActivityForResult(captureImage, REQUEST_PHOTO);
+//                Toast.makeText(getContext(), "pressed", Toast.LENGTH_SHORT).show();
+            }
+        });
+        //******************************************************************** photo function
+
         //pressed save button
+
         mSaveButton = (Button) v.findViewById(R.id.trip_save_button);
         mSaveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mTrip = new Trip();
+
                 mTrip.setTitle(mTitleField.getText().toString());
                 SimpleDateFormat sdf = new SimpleDateFormat("dd/M/yyyy");
                 try {
@@ -106,6 +148,7 @@ public class TripNewFragment extends Fragment {
                 //Now insert the new trip record into the table
                 TripLab.get(getActivity()).addTrip(mTrip);
                 Toast.makeText(getActivity(), "Saved" , Toast.LENGTH_SHORT).show();
+
             }
         });
 
@@ -131,7 +174,17 @@ public class TripNewFragment extends Fragment {
             SimpleDateFormat sdf = new SimpleDateFormat("dd/M/yyyy");
             String stringFormattedDate= sdf.format(date);
             mDateButton.setText(stringFormattedDate);
+        } else if (requestCode == REQUEST_PHOTO) {
+            updatePhotoView();
         }
     }
 
+    private void updatePhotoView() {
+        if (mPhotoFile == null || !mPhotoFile.exists()) {
+            mPhotoView.setImageDrawable(null);
+        } else {
+            Bitmap bitmap = PictureUtils.getScaledBitmap(mPhotoFile.getPath(), getActivity());
+            mPhotoView.setImageBitmap(bitmap);
+        }
+    }
 }

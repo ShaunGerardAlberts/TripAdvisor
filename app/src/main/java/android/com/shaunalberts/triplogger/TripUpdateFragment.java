@@ -51,6 +51,7 @@ import com.google.android.gms.location.LocationServices;
  * Shaun      09-October-2016          Add photo functionality
  * Shaun      18-October-2016          Started with gps work
  * Shaun      19-October-2016          Started with maps
+ * Shaun      26-October-2016          Cleaned up code a bit
  *
  */
 public class TripUpdateFragment extends Fragment implements GoogleApiClient.ConnectionCallbacks {
@@ -75,7 +76,6 @@ public class TripUpdateFragment extends Fragment implements GoogleApiClient.Conn
     private File mPhotoFile;
     //gps
     private Button mGPSButton;
-    private EditText mGps;
     private GoogleApiClient mClient;
 
     //delete
@@ -118,27 +118,6 @@ public class TripUpdateFragment extends Fragment implements GoogleApiClient.Conn
         mClient.disconnect();
     }
 
-//    //copying from textbook
-//    private void getGPSLocation() {
-//        LocationRequest request = LocationRequest.create();
-//        request.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-//        request.setNumUpdates(1);
-//        request.setInterval(0);
-//        //send off request and listen for the Locations to come back
-//        LocationServices.FusedLocationApi.requestLocationUpdates(mClient, request, new LocationListener() {
-//            @Override
-//            public void onLocationChanged(Location location) {
-//                Log.i(TAG, "Got a fix: " + location);
-//                Log.i(TAG, "Got latitude " + location.getLatitude());
-//                Log.i(TAG, "Got longitude " + location.getLongitude());
-//                String gpsCord = location.getLatitude() + ";" + location.getLongitude();
-//                mGPSLocation.setText(gpsCord);
-//                mTrip.setGpsLocation(gpsCord);
-////                new SearchTask().execute(location);// ******************************************************
-//            }
-//        });
-//    }
-
     @Override
     public void onConnected(Bundle connectionHint) {
         LocationRequest request = LocationRequest.create();
@@ -149,13 +128,9 @@ public class TripUpdateFragment extends Fragment implements GoogleApiClient.Conn
         LocationServices.FusedLocationApi.requestLocationUpdates(mClient, request, new LocationListener() {
             @Override
             public void onLocationChanged(Location location) {
-                Log.i(TAG, "Got a fix: " + location);
-                Log.i(TAG, "Got longitude " + location.getLongitude() + " should be -25.76");
-                Log.i(TAG, "Got latitude " + location.getLatitude() + " should be 28.29");
                 String gpsCord = location.getLatitude() + ";" + location.getLongitude();
                 mGPSLocation.setText(gpsCord);
                 mTrip.setGpsLocation(gpsCord);
-//                new SearchTask().execute(location);// ******************************************************
             }
         });
     }
@@ -170,6 +145,50 @@ public class TripUpdateFragment extends Fragment implements GoogleApiClient.Conn
                              Bundle savedInstanceState ) {
         View v = inflater.inflate(R.layout.fragment_trip_detail, container, false);
 
+        addItemAndListeners(v);
+
+        return v;
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        TripLab.get(getActivity()).updateTrip(mTrip);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode != Activity.RESULT_OK) {
+            return;
+        }
+
+        if (requestCode == REQUEST_DATE) {
+            Date date = (Date) data.getSerializableExtra(DatePickerFragment.EXTRA_DATE);
+            mTrip.setDate(date);
+
+           updateDate();
+        } else if (requestCode == REQUEST_PHOTO) {
+            updatePhotoView();
+        }
+    }
+
+    //Sets the text of the DateButton to the correctly formatted date
+    public void updateDate() {
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/M/yyyy");
+        String setDate = sdf.format(mTrip.getDate());
+        mDateButton.setText(setDate);
+    }
+
+    private void updatePhotoView() {
+        if (mPhotoFile == null || !mPhotoFile.exists()) {
+            mPhotoView.setImageDrawable(null);
+        } else {
+            Bitmap bitmap = PictureUtils.getScaledBitmap(mPhotoFile.getPath(), getActivity());
+            mPhotoView.setImageBitmap(bitmap);
+        }
+    }
+
+    private void addItemAndListeners(View v) {
         //Title - EditText
         mTitleField = (EditText) v.findViewById(R.id.trip_title_edit_text);
         mTitleField.setText(mTrip.getTitle());
@@ -292,24 +311,6 @@ public class TripUpdateFragment extends Fragment implements GoogleApiClient.Conn
         } catch (Exception e) {
             e.printStackTrace();
         }
-//        mGPSLocation.setText(mTrip.getGpsLoction());
-//        mGPSLocation.addTextChangedListener(new TextWatcher() {
-//            @Override
-//            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-//                //blank
-//            }
-//
-//            @Override
-//            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-//                getGPSLocation();
-//
-//            }
-//
-//            @Override
-//            public void afterTextChanged(Editable editable) {
-//
-//            }
-//        });
 
         mGPSButton = (Button) v.findViewById(R.id.trip_gps_button);
         mGPSButton.setOnClickListener(new View.OnClickListener() {
@@ -360,63 +361,11 @@ public class TripUpdateFragment extends Fragment implements GoogleApiClient.Conn
             @Override
             public void onClick(View view) {
                 startActivityForResult(captureImage, REQUEST_PHOTO);
-                Toast.makeText(getContext(), "pressed", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getContext(), "pressed", Toast.LENGTH_SHORT).show();
             }
         });
         //display photo if available
         updatePhotoView();
-
-        return v;
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        TripLab.get(getActivity()).updateTrip(mTrip);
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode != Activity.RESULT_OK) {
-            return;
-        }
-
-        if (requestCode == REQUEST_DATE) {
-            Date date = (Date) data.getSerializableExtra(DatePickerFragment.EXTRA_DATE);
-            mTrip.setDate(date);
-
-           updateDate();
-        } else if (requestCode == REQUEST_PHOTO) {
-            updatePhotoView();
-        }
-    }
-
-    //Sets the text of the DateButton to the correctly formatted date
-    public void updateDate() {
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/M/yyyy");
-        String setDate = sdf.format(mTrip.getDate());
-        mDateButton.setText(setDate);
-    }
-
-    private void updatePhotoView() {
-        if (mPhotoFile == null || !mPhotoFile.exists()) {
-            mPhotoView.setImageDrawable(null);
-        } else {
-            Bitmap bitmap = PictureUtils.getScaledBitmap(mPhotoFile.getPath(), getActivity());
-            mPhotoView.setImageBitmap(bitmap);
-        }
-    }
-
-    //inner AsyncTask, is a thread to download the image for google maps
-    private class SearchTask extends AsyncTask<Location,Void,Void> {//*******************************************
-
-        @Override
-        protected Void doInBackground(Location... params) {
-            return null;
-        }
-    }
-
-    private void updateMap() {
 
     }
 
