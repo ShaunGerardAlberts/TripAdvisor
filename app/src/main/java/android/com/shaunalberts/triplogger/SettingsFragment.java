@@ -64,11 +64,11 @@ public class SettingsFragment extends Fragment {
         mGender = (EditText) v.findViewById(R.id.settings_gender_edit_text);
         mComment = (EditText) v.findViewById(R.id.settings_comment_edit_text);
 
-            mNameField.setText(mSetting.getStudentName());
-            mIdNum.setText(mSetting.getIdNum());
-            mEmail.setText((mSetting.getEmail()));
-            mGender.setText(mSetting.getGender());
-            mComment.setText(mSetting.getComment());
+        mNameField.setText(mSetting.getStudentName());
+        mIdNum.setText(mSetting.getIdNum());
+        mEmail.setText((mSetting.getEmail()));
+        mGender.setText(mSetting.getGender());
+        mComment.setText(mSetting.getComment());
 
 //        this.saveButtonPressed(v);
 

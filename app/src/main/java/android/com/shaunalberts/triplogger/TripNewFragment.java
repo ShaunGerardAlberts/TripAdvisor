@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -21,6 +22,11 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationListener;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
+
 import java.io.File;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -34,7 +40,7 @@ import java.util.Date;
  * Shaun      04-October-2016          Initial
  *
  */
-public class TripNewFragment extends Fragment {
+public class TripNewFragment extends Fragment implements GoogleApiClient.ConnectionCallbacks {
 
     private static final String DIALOG_DATE = "TripNewFragment.DialogDate";//for the dateDialog(DatePickerDialog)
     private static final int REQUEST_DATE = 0;//used when setting target of the dialog
@@ -48,6 +54,9 @@ public class TripNewFragment extends Fragment {
     private EditText mComment;
     private EditText mGPSLocation;
     private Spinner mTripTypeSpinner;
+    //gps
+    private Button mGPSButton;
+    private GoogleApiClient mClient;
 
     private ImageButton mPhotoButton;
     private ImageView mPhotoView;
@@ -63,8 +72,48 @@ public class TripNewFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //create a client to use Play Services
+        mClient = new GoogleApiClient.Builder(getActivity())
+                .addApi(LocationServices.API)
+                .addConnectionCallbacks(this)
+                .build();
+        //initialise mTrip here when creating a new Trip
+        mTrip = new Trip();
     }
 
+    @Override
+    public void onConnected(Bundle connectionHint) {
+        LocationRequest request = LocationRequest.create();
+        request.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        request.setNumUpdates(1);
+        request.setInterval(0);
+        //send off request and listen for the Locations to come back
+        LocationServices.FusedLocationApi.requestLocationUpdates(mClient, request, new LocationListener() {
+            @Override
+            public void onLocationChanged(Location location) {
+                String gpsCord = location.getLatitude() + ";" + location.getLongitude();
+                mGPSLocation.setText(gpsCord);
+                mTrip.setGpsLocation(gpsCord);
+            }
+        });
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        mClient.connect();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        mClient.disconnect();
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+
+    }
 
     boolean canTakePhoto = false;
     @Override
@@ -111,7 +160,7 @@ public class TripNewFragment extends Fragment {
         canTakePhoto = mPhotoButton != null && captureImage.resolveActivity(packageManager) != null;
         mPhotoButton.setEnabled(canTakePhoto);
 
-        mTrip = new Trip();
+//        mTrip = new Trip();
         mPhotoFile = TripLab.get(getActivity()).getPhotoFile(mTrip);
         //when photo button pressed fire off intent
         mPhotoButton.setOnClickListener(new View.OnClickListener() {
@@ -125,6 +174,15 @@ public class TripNewFragment extends Fragment {
         });
         //******************************************************************** photo function
 
+        //Google Maps
+        mGPSButton = (Button) v.findViewById(R.id.trip_gps_button);
+        mGPSButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent mapIntent = MapHolidayActivity.newIntent(getContext(), mTrip.getId());
+                startActivity(mapIntent);
+            }
+        });
         //pressed save button
 
         mSaveButton = (Button) v.findViewById(R.id.trip_save_button);
