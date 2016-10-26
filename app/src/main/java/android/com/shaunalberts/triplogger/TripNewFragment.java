@@ -115,7 +115,7 @@ public class TripNewFragment extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
-//      not updating here, insert when save button pressed
+        //not updating here, insert when save button pressed
     }
 
 
@@ -125,23 +125,13 @@ public class TripNewFragment extends Fragment {
             return;
         }
 
+        //Result from the dateDialog
         if (requestCode == REQUEST_DATE) {
             Date date = (Date) data.getSerializableExtra(DatePickerFragment.EXTRA_DATE);
             SimpleDateFormat sdf = new SimpleDateFormat("dd/M/yyyy");
             String stringFormattedDate= sdf.format(date);
             mDateButton.setText(stringFormattedDate);
-
-//            mDateButton.setText(date.toString());
-//            mTrip.setDate(date);
-
-//            updateDate();
         }
     }
 
-    //Sets the text of the DateButton to the correctly formatted date
-    public void updateDate() {
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/M/yyyy");
-        String setDate = sdf.format(mTrip.getDate());
-        mDateButton.setText(setDate);
-    }
 }
