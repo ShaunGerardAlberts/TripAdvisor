@@ -8,20 +8,25 @@ import java.util.UUID;
 
 /**
  * Shaun      19-October-2016               Initial
+ * Shaun      26-October-2016               Changed reliance in tripId to longitude and latitude values
  */
+
 public class MapHolidayActivity extends SingleFragmentActivity {
 
-    private static final String EXTRA_MAP_ID = "android.com.shaunalberts.triplogger.trip_map_id";
+    private static final String EXTRA_MAP_LATITUDE = "android.com.shaunalberts.triplogger.trip_map_latitude";
+    private static final String EXTRA_MAP_LONGITUDE = "android.com.shaunalberts.triplogger.trip_map_longitude";
 
-    public static Intent newIntent(Context context, UUID tripId) {
+    public static Intent newIntent(Context context, double latitude, double longitude) {
         Intent intent = new Intent(context, MapHolidayActivity.class);
-        intent.putExtra(EXTRA_MAP_ID, tripId);
+        intent.putExtra(EXTRA_MAP_LATITUDE, latitude);
+        intent.putExtra(EXTRA_MAP_LONGITUDE, longitude);
         return intent;
     }
 
     @Override
     protected Fragment createFragment() {
-        UUID tripId = (UUID) getIntent().getSerializableExtra(EXTRA_MAP_ID);
-        return MapHolidayFragment.newInstance(tripId);
+        double latitude = (double) getIntent().getSerializableExtra(EXTRA_MAP_LATITUDE);
+        double longitude = (double) getIntent().getSerializableExtra(EXTRA_MAP_LONGITUDE);
+        return MapHolidayFragment.newInstance(latitude, longitude);
     }
 }

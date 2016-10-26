@@ -37,12 +37,6 @@ import com.google.android.gms.location.LocationServices;
 /**
  * TripUpdateFragment, gets added to the TripUpdateActivity.  Links with the fragment_trip_detail.xml.
  *
- *
- *Still to do: save and cancel functionality, think about gps structure
- *
- */
-
-/**
  * Shaun      30-September-2016        Initial
  * Shaun      01-October-2016          Set the text of the TripUpdateActivity
  * Shaun      02-October-2016          Add datePicker dialog with dialogs
@@ -51,7 +45,8 @@ import com.google.android.gms.location.LocationServices;
  * Shaun      09-October-2016          Add photo functionality
  * Shaun      18-October-2016          Started with gps work
  * Shaun      19-October-2016          Started with maps
- * Shaun      26-October-2016          Cleaned up code a bit
+ * Shaun      26-October-2016          Cleaned up code a bit, removed tha ability to change the GPS but
+ *                                     left the code in comments for if you want to add it later
  *
  */
 public class TripUpdateFragment extends Fragment implements GoogleApiClient.ConnectionCallbacks {
@@ -69,7 +64,7 @@ public class TripUpdateFragment extends Fragment implements GoogleApiClient.Conn
     private EditText mDestinationField;
     private EditText mDuration;
     private EditText mComment;
-    private EditText mGPSLocation;//changed to a button
+    private EditText mGPSLocation;
     private Spinner mTripTypeSpinner;
     private ImageButton mPhotoButton;
     private ImageView mPhotoView;
@@ -233,8 +228,6 @@ public class TripUpdateFragment extends Fragment implements GoogleApiClient.Conn
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 mTrip.setTripType(mTripTypeSpinner.getSelectedItemPosition());
-//                Toast.makeText(getContext(), "you clicked : " + mTripTypeSpinner
-//                              .getSelectedItemPosition(), Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -306,9 +299,9 @@ public class TripUpdateFragment extends Fragment implements GoogleApiClient.Conn
 
         //GPSLocation - EditText
         mGPSLocation = (EditText) v.findViewById(R.id.trip_gps_edit_text);
+        mGPSLocation.setEnabled(false);
         try {
             mGPSLocation.setText(mTrip.getGpsLoction().toString());
-            mGPSLocation.setEnabled(false);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -318,8 +311,14 @@ public class TripUpdateFragment extends Fragment implements GoogleApiClient.Conn
         mGPSButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent mapIntent = MapHolidayActivity.newIntent(getContext(), mTrip.getId());
-                startActivity(mapIntent);
+                try {
+                    String[] gpsLocation = mTrip.getGpsLoction().split(";");
+                    Intent mapIntent = MapHolidayActivity.newIntent(getContext(),
+                            Double.parseDouble(gpsLocation[0]), Double.parseDouble(gpsLocation[1]));
+                    startActivity(mapIntent);
+                } catch (Exception ex) {
+                    Toast.makeText(getContext(), "You should have set gps location when adding a new trip.", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 

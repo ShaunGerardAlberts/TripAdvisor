@@ -33,11 +33,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
- * To add a new trip to the list.
- *
- * TO DO: Refactor this code,  Esp. the sdf date lines.
- *
  * Shaun      04-October-2016          Initial
+ * Shaun      26-October-2016          Added GPS and Maps
  *
  */
 public class TripNewFragment extends Fragment implements GoogleApiClient.ConnectionCallbacks {
@@ -63,6 +60,7 @@ public class TripNewFragment extends Fragment implements GoogleApiClient.Connect
     private File mPhotoFile;
 
     private Button mSaveButton;
+    private Button mCancelButton;
 
     public static TripNewFragment newInstance() {
         TripNewFragment fragment = new TripNewFragment();
@@ -124,6 +122,7 @@ public class TripNewFragment extends Fragment implements GoogleApiClient.Connect
 
         mTitleField = (EditText) v.findViewById(R.id.trip_title_edit_text);
         mDateButton = (Button) v.findViewById(R.id.trip_date_edit_text);
+
         //initialise the date on the button
         SimpleDateFormat sdf = new SimpleDateFormat("dd/M/yyyy");
         mDateButton.setText(sdf.format(new Date()));
@@ -139,16 +138,16 @@ public class TripNewFragment extends Fragment implements GoogleApiClient.Connect
                 dialog.show(manager, DIALOG_DATE);
             }
         });
+
         mDestinationField = (EditText) v.findViewById(R.id.trip_destination_edit_text);
         mDuration = (EditText) v.findViewById(R.id.trip_duration_edit_text);
         mComment = (EditText) v.findViewById(R.id.trip_comment_edit_text);
         mGPSLocation = (EditText) v.findViewById(R.id.trip_gps_edit_text);
+        mGPSLocation.setEnabled(false);
 
         mTripTypeSpinner = (Spinner) v.findViewById(R.id.trip_type_spinner);
 
-        //***************************************************************** photo function
         //Photo capture and display
-
         //used to determine if the is a camera app available
         PackageManager packageManager = getActivity().getPackageManager();
 
@@ -157,10 +156,10 @@ public class TripNewFragment extends Fragment implements GoogleApiClient.Connect
 
         final Intent captureImage = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 
+        //can this device take photos
         canTakePhoto = mPhotoButton != null && captureImage.resolveActivity(packageManager) != null;
         mPhotoButton.setEnabled(canTakePhoto);
 
-//        mTrip = new Trip();
         mPhotoFile = TripLab.get(getActivity()).getPhotoFile(mTrip);
         //when photo button pressed fire off intent
         mPhotoButton.setOnClickListener(new View.OnClickListener() {
@@ -169,22 +168,27 @@ public class TripNewFragment extends Fragment implements GoogleApiClient.Connect
                 Uri uri = Uri.fromFile(mPhotoFile);
                 captureImage.putExtra(MediaStore.EXTRA_OUTPUT, uri);
                 startActivityForResult(captureImage, REQUEST_PHOTO);
-//                Toast.makeText(getContext(), "pressed", Toast.LENGTH_SHORT).show();
             }
         });
-        //******************************************************************** photo function
 
-        //Google Maps
+        //Google Maps - When the View Map button is pressed
         mGPSButton = (Button) v.findViewById(R.id.trip_gps_button);
         mGPSButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent mapIntent = MapHolidayActivity.newIntent(getContext(), mTrip.getId());
-                startActivity(mapIntent);
+                try {
+                    //get longitude and latitude, [0] latitude, [1] longitude
+                    String[] gpsLocation = mTrip.getGpsLoction().split(";");
+                    Intent mapIntent = MapHolidayActivity.newIntent(getContext(),
+                            Double.parseDouble(gpsLocation[0]), Double.parseDouble(gpsLocation[1]));
+                    startActivity(mapIntent);
+                } catch (Exception e) {
+                    Toast.makeText(getContext(), "Please change GPS coordinates", Toast.LENGTH_SHORT).show();
+                }
             }
         });
-        //pressed save button
 
+        //pressed save button
         mSaveButton = (Button) v.findViewById(R.id.trip_save_button);
         mSaveButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -210,6 +214,16 @@ public class TripNewFragment extends Fragment implements GoogleApiClient.Connect
             }
         });
 
+        //cancel button
+        mCancelButton = (Button) v.findViewById(R.id.trip_cancel_button);
+        mCancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = TripListActivity.newIntent(getContext());
+                startActivity(intent);
+            }
+        });
+
         return v;
     }
 
@@ -226,13 +240,12 @@ public class TripNewFragment extends Fragment implements GoogleApiClient.Connect
             return;
         }
 
-        //Result from the dateDialog
-        if (requestCode == REQUEST_DATE) {
+        if (requestCode == REQUEST_DATE) {//date dialog
             Date date = (Date) data.getSerializableExtra(DatePickerFragment.EXTRA_DATE);
             SimpleDateFormat sdf = new SimpleDateFormat("dd/M/yyyy");
             String stringFormattedDate= sdf.format(date);
             mDateButton.setText(stringFormattedDate);
-        } else if (requestCode == REQUEST_PHOTO) {
+        } else if (requestCode == REQUEST_PHOTO) {//photo application
             updatePhotoView();
         }
     }

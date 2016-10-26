@@ -24,20 +24,22 @@ import java.util.UUID;
 
 /**
  * Shaun      19-October-2016               Initial
+ * Shaun      26-October-2016               Changed newInstance arguments used to use tripId
  */
 public class MapHolidayFragment extends SupportMapFragment {
 
-    private static final String ARG_TRIP_ID = "trip_id";
+    private static final String ARG_MAP_LATITUDE = "map_lat";
+    private static final String ARG_MAP_LONGITUDE = "map_long";
 
-    private Trip mTrip;
-    private Location mCurrentLocation;
     private GoogleMap mMap;
-    private GoogleApiClient mClient;
+    private double latitude;
+    private double longitude;
 
 
-    public static MapHolidayFragment newInstance(UUID tripId) {
+    public static MapHolidayFragment newInstance(double latitude, double longitude) {
         Bundle args = new Bundle();
-        args.putSerializable(ARG_TRIP_ID, tripId);
+        args.putSerializable(ARG_MAP_LATITUDE, latitude);
+        args.putSerializable(ARG_MAP_LONGITUDE, longitude);
 
         MapHolidayFragment fragment = new MapHolidayFragment();
         fragment.setArguments(args);
@@ -48,8 +50,8 @@ public class MapHolidayFragment extends SupportMapFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        UUID tripId = (UUID) getArguments().getSerializable(ARG_TRIP_ID);
-        mTrip = TripLab.get(getActivity()).getTrip(tripId);
+        this.latitude = (double) getArguments().getSerializable(ARG_MAP_LATITUDE);
+        this.longitude = (double) getArguments().getSerializable(ARG_MAP_LONGITUDE);
 
         getMapAsync(new OnMapReadyCallback() {
             @Override
@@ -66,17 +68,7 @@ public class MapHolidayFragment extends SupportMapFragment {
         }
 
         try {
-            String[] strArrLongLat = mTrip.getGpsLoction().split(";");
-            Double dblLat = Double.parseDouble(strArrLongLat[0]);
-            Double dblLong = Double.parseDouble(strArrLongLat[1]);
-
-            Location buildLocation = new Location("Build Location");
-            buildLocation.setLongitude(dblLong);
-            buildLocation.setLatitude(dblLat);
-
-            mCurrentLocation = buildLocation;
-            //LatLng locationPoint = new LatLng(mCurrentLocation.getLongitude(), mCurrentLocation.getLatitude());
-            LatLng locationPoint = new LatLng(dblLat, dblLong);
+            LatLng locationPoint = new LatLng(latitude, longitude);
             MarkerOptions itemMarket = new MarkerOptions().position(locationPoint);
 
             mMap.clear();
