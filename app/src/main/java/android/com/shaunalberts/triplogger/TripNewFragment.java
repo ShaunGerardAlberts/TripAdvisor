@@ -210,7 +210,9 @@ public class TripNewFragment extends Fragment implements GoogleApiClient.Connect
                 //Now insert the new trip record into the table
                 TripLab.get(getActivity()).addTrip(mTrip);
                 Toast.makeText(getActivity(), "Saved" , Toast.LENGTH_SHORT).show();
-
+                //return to trips list
+                Intent intent = TripListActivity.newIntent(getContext());
+                startActivity(intent);
             }
         });
 
