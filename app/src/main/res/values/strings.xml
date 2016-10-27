@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">TripLogger</string>
     <!--For the Trip Details and Trip Details Activities -->
-    <string name="trip_title">Title</string>
+    <string name="trip_title">Title of Holiday</string>
     <string name="trip_date">Date</string>
     <string name="date_picker_title">Date of Trip:</string>
     <string name="trip_type">Trip Type</string>

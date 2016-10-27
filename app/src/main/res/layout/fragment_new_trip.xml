@@ -17,13 +17,15 @@
             android:layout_height="wrap_content"
             android:text="@string/save_button"
             android:id="@+id/trip_save_button"
-            android:layout_weight="1"/>
+            android:layout_weight="1"
+            android:layout_marginLeft="16dp"/>
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/cancel_button"
             android:id="@+id/trip_cancel_button"
-            android:layout_weight="1"/>
+            android:layout_weight="1"
+            android:layout_marginRight="16dp"/>
     </LinearLayout>
 
 </LinearLayout>

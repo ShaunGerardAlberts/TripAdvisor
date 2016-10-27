@@ -9,13 +9,16 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/list_item_trip_title_text_view"
+        android:textStyle="bold"
+        android:textSize="24dp"
         tools:text="Trip Title"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/list_item_trip_destination_text_view"
-        tools:text="Destination"/>
+        tools:text="Destination"
+        android:textSize="20dp"/>
 
     <TextView
         android:layout_width="wrap_content"
