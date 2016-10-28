@@ -8,6 +8,9 @@ import java.util.Date;
 import java.util.UUID;
 
 /**
+ * Represents a trip.  Contains getter and setters for all the required fields.  Basically
+ * represents a record from the TripTable.
+ *
  * Shaun      29-September-2016        Initial
  * Shaun      01-October-2016          Changed mTripType to int
  * Shaun      19-October-2016          Added Location type for gps location
@@ -99,11 +102,4 @@ public class Trip {
         this.mGpsLocation = gpsLocation;
     }
 
-//    public Location getLocation() {
-//        return mLocation;
-//    }
-//
-//    public void setLocation(Location location) {
-//        mLocation = location;
-//    }
 }

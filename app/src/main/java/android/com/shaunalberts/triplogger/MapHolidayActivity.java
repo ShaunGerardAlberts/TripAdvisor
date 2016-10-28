@@ -7,6 +7,8 @@ import android.support.v4.app.Fragment;
 import java.util.UUID;
 
 /**
+ * Holds the MapHolidayFragment
+ *
  * Shaun      19-October-2016               Initial
  * Shaun      26-October-2016               Changed reliance in tripId to longitude and latitude values
  */

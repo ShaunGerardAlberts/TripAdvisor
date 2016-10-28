@@ -35,7 +35,8 @@ import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 /**
- * TripUpdateFragment, gets added to the TripUpdateActivity.  Links with the fragment_trip_detail.xml.
+ * User can view a trip in greater detail and/or update a existing trip.  Cannot set gps coordinates
+ * here, has to be done in the creating a new trip activity.
  *
  * Shaun      30-September-2016        Initial
  * Shaun      01-October-2016          Set the text of the TripUpdateActivity
@@ -99,35 +100,6 @@ public class TripUpdateFragment extends Fragment implements GoogleApiClient.Conn
 //                .addApi(LocationServices.API)
 //                .addConnectionCallbacks(this)
 //                .build();
-    }
-
-//    @Override
-//    public void onStart() {
-//        super.onStart();
-//        mClient.connect();
-//    }
-//
-//    @Override
-//    public void onStop() {
-//        super.onStop();
-//        mClient.disconnect();
-//    }
-
-    @Override
-    public void onConnected(Bundle connectionHint) {
-//        LocationRequest request = LocationRequest.create();
-//        request.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-//        request.setNumUpdates(1);
-//        request.setInterval(0);
-//        //send off request and listen for the Locations to come back
-//        LocationServices.FusedLocationApi.requestLocationUpdates(mClient, request, new LocationListener() {
-//            @Override
-//            public void onLocationChanged(Location location) {
-//                String gpsCord = location.getLatitude() + ";" + location.getLongitude();
-//                mGPSLocation.setText(gpsCord);
-//                mTrip.setGpsLocation(gpsCord);
-//            }
-//        });
     }
 
     @Override
@@ -366,6 +338,35 @@ public class TripUpdateFragment extends Fragment implements GoogleApiClient.Conn
         //display photo if available
         updatePhotoView();
 
+    }
+
+    //    @Override
+//    public void onStart() {
+//        super.onStart();
+//        mClient.connect();
+//    }
+//
+//    @Override
+//    public void onStop() {
+//        super.onStop();
+//        mClient.disconnect();
+//    }
+
+    @Override
+    public void onConnected(Bundle connectionHint) {
+//        LocationRequest request = LocationRequest.create();
+//        request.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+//        request.setNumUpdates(1);
+//        request.setInterval(0);
+//        //send off request and listen for the Locations to come back
+//        LocationServices.FusedLocationApi.requestLocationUpdates(mClient, request, new LocationListener() {
+//            @Override
+//            public void onLocationChanged(Location location) {
+//                String gpsCord = location.getLatitude() + ";" + location.getLongitude();
+//                mGPSLocation.setText(gpsCord);
+//                mTrip.setGpsLocation(gpsCord);
+//            }
+//        });
     }
 
 }

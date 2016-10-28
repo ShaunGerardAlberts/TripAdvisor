@@ -7,16 +7,17 @@ package android.com.shaunalberts.triplogger;
  *
  * Shaun      02-October-2016          Initial
  * Shaun      03-October-2016          Separated the database related work out this class
+ * Shaun      28-October-2016          Renamed variables to conform to the mVar standard
  *
  */
 public class Setting {
 
     private String mId;
-    private String studentName;
-    private String idNum;
-    private String email;
-    private String gender;
-    private String comment;
+    private String mStudentName;
+    private String mIdNum;
+    private String mEmail;
+    private String mGender;
+    private String mComment;
 
     private static final String SETTING_INDEX = "1";
 
@@ -25,8 +26,8 @@ public class Setting {
         this(SETTING_INDEX);
     }
 
-    public Setting(String id) {
-        mId = id;
+    public Setting(String mId) {
+        this.mId = mId;
     }
 
     public String getId() {
@@ -34,43 +35,43 @@ public class Setting {
     }
 
     public String getStudentName() {
-        return studentName;
+        return mStudentName;
     }
 
-    public void setStudentName(String studentName) {
-        this.studentName = studentName;
+    public void setStudentName(String mStudentName) {
+        this.mStudentName = mStudentName;
     }
 
     public String getIdNum() {
-        return idNum;
+        return mIdNum;
     }
 
-    public void setIdNum(String idNum) {
-        this.idNum = idNum;
+    public void setIdNum(String mIdNum) {
+        this.mIdNum = mIdNum;
     }
 
     public String getEmail() {
-        return email;
+        return mEmail;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setEmail(String mEmail) {
+        this.mEmail = mEmail;
     }
 
     public String getGender() {
-        return gender;
+        return mGender;
     }
 
-    public void setGender(String gender) {
-        this.gender = gender;
+    public void setGender(String mGender) {
+        this.mGender = mGender;
     }
 
     public String getComment() {
-        return comment;
+        return mComment;
     }
 
-    public void setComment(String comment) {
-        this.comment = comment;
+    public void setComment(String mComment) {
+        this.mComment = mComment;
     }
 
 

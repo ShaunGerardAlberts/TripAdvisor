@@ -9,6 +9,9 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 /**
+ * Singleton class.  Can to either create or return this class.  Then used to read, insert or
+ * update the Setting.
+ *
  * Shaun      03-October-2016          Initial - tried to include this in Setting but became too complicated
  */
 public class SettingLab {

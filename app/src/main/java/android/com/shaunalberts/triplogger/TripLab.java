@@ -17,7 +17,8 @@ import android.os.Environment;
 
 /**
  * Going to store a list of trips.  Using a Singleton class here, allows only one instance of
- * the class to exist at a time.
+ * the class to exist at a time.  Used to get a list off all the trips, add, delete or update
+ * trips.
  *
  * Shaun      29-September-2016        Initial
  * Shaun      04-September-2016        Added delete function

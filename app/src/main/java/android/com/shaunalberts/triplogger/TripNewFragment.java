@@ -33,6 +33,10 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
+ * User can add a new trip to the database.  Can take a photo, and if GPS coorinates have changed
+ * they will be written to the gps edit field.  Map can be viewed.  User can save by pressing
+ * button or cancel to return to list display.
+ *
  * Shaun      04-October-2016          Initial
  * Shaun      26-October-2016          Added GPS and Maps
  *

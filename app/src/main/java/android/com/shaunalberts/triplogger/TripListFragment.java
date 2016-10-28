@@ -15,6 +15,9 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 
 /**
+ * Displays the list of all the trips in the database.  Uses the RecycleView to do this.  The
+ * recycleView makes use of the holder and adapter inner classes to achieve this.
+ *
  * Shaun      30 September 2016        Initial
  * Shaun      02-October-2016          Added listener for settings button
  */
@@ -117,7 +120,6 @@ public class TripListFragment extends Fragment {
         public void onClick(View v) {
             //when user click a item in the list, get the trip id and intent
             Intent intent = TripUpdateActivity.newIntent(getActivity(), mTrip.getId());
-            //Toast.makeText(getActivity(), "clicked " + mTrip.getId(), Toast.LENGTH_SHORT).show();
             startActivity(intent);
         }
     }

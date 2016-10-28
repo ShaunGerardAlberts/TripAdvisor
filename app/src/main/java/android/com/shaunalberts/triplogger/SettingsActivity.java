@@ -16,7 +16,6 @@ public class SettingsActivity extends SingleFragmentActivity {
 
     @Override
     protected Fragment createFragment() {
-        //still to implement
         return SettingsFragment.newInstance();
     }
 }

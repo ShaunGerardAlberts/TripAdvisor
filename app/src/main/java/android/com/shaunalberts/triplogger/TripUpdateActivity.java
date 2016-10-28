@@ -13,6 +13,7 @@ import com.google.android.gms.common.GooglePlayServicesUtil;
 import java.util.UUID;
 
 /**
+ *
  * Shaun      29-September-2016        Initial
  * Shaun      04-October-2016          Renamed class from TripActivity to TripUpdateActivity
  * Shaun      18-October-2016          Added GPS

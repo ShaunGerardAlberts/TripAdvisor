@@ -12,6 +12,9 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 /**
+ * Is the fragment that displays the setting values.  This is the information about the app creator.
+ * In the onCreate method blank entry is entered into the database and there after changed, with a
+ * changedListener ensured update whenever and text is changed.
  *
  * Shaun      02-October-2016          Initial
  * Shaun      03-October-2016          Add insert and update functionality
@@ -66,8 +69,6 @@ public class SettingsFragment extends Fragment {
         mEmail.setText((mSetting.getEmail()));
         mGender.setText(mSetting.getGender());
         mComment.setText(mSetting.getComment());
-
-//        this.saveButtonPressed(v);
 
         //change data as user enters new data
         //Name edit field
@@ -161,6 +162,10 @@ public class SettingsFragment extends Fragment {
         return v;
     }
 
+    /**
+     * When the user presses back, this is called.  Thus any changed are written to the
+     * database here.
+     */
     @Override
     public void onPause() {
         super.onPause();

@@ -23,6 +23,8 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import java.util.UUID;
 
 /**
+ * Fragment that creates the marker and google map.
+ *
  * Shaun      19-October-2016               Initial
  * Shaun      26-October-2016               Changed newInstance arguments used to use tripId
  */
@@ -35,7 +37,13 @@ public class MapHolidayFragment extends SupportMapFragment {
     private double latitude;
     private double longitude;
 
-
+    /**
+     * Returns an fragment with latitude and longitude set as extras in the Bundle.
+     *
+     * @param latitude
+     * @param longitude
+     * @return fragment
+     */
     public static MapHolidayFragment newInstance(double latitude, double longitude) {
         Bundle args = new Bundle();
         args.putSerializable(ARG_MAP_LATITUDE, latitude);
@@ -46,6 +54,12 @@ public class MapHolidayFragment extends SupportMapFragment {
         return fragment;
     }
 
+    /**
+     * Gets latitude and longitude from Bundle that was set in the MapHolidayActivity.  The starts
+     * off a Async thread to download the map.
+     *
+     * @param savedInstanceState
+     */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,6 +76,9 @@ public class MapHolidayFragment extends SupportMapFragment {
         });
     }
 
+    /**
+     * Create a marker and add it to a map.
+     */
     private void updateUI() {
         if (mMap == null) {
             return;
