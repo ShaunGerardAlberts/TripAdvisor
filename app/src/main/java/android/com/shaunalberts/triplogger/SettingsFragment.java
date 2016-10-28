@@ -12,8 +12,6 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 /**
- * Still to do:  Only allow the SettingTable to contain one record, if it has a record, update when
- * changed are attempted.
  *
  * Shaun      02-October-2016          Initial
  * Shaun      03-October-2016          Add insert and update functionality
@@ -26,7 +24,6 @@ public class SettingsFragment extends Fragment {
     private EditText mEmail;
     private EditText mGender;
     private EditText mComment;
-    private Button mSaveButton;
 
     private Setting mSetting;
 
@@ -170,30 +167,5 @@ public class SettingsFragment extends Fragment {
         SettingLab settingLab = SettingLab.get(getActivity());
             settingLab.updateSetting(mSetting);
     }
-
-//    private void saveButtonPressed(View v) {
-//        //Save any changes made to User Profile
-//        mSaveButton = (Button) v.findViewById(R.id.settings_save_button);
-//        mSaveButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                SettingLab settingLab = SettingLab.get(getActivity());
-//                //create a new Setting object get entered text from view.
-//                Setting fmSetting = new Setting();
-//                fmSetting.setStudentName(mNameField.getText().toString());
-//                fmSetting.setIdNum(mIdNum.getText().toString());
-//                fmSetting.setEmail(mEmail.getText().toString());
-//                fmSetting.setGender(mGender.getText().toString());
-//                fmSetting.setComment(mComment.getText().toString());
-//                //now insert or update
-//                if (existingRecord) {
-//                    settingLab.updateSetting(fmSetting);
-//                } else {
-//                    settingLab.addSetting(fmSetting);
-//                }
-//                Toast.makeText(getContext(), "Saved", Toast.LENGTH_SHORT).show();
-//            }
-//        });
-//    }
 
 }

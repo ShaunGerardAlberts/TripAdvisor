@@ -46,12 +46,6 @@ public class TripListFragment extends Fragment {
         mLogButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //Toast.makeText(getActivity(), "clicked", Toast.LENGTH_SHORT).show();
-//                Trip trip = new Trip();
-//                TripLab.get(getActivity()).addTrip(trip);
-//                Intent intent = TripUpdateActivity.newIntent(getActivity(), trip.getId());
-//                //Toast.makeText(getActivity(), "clicked " + trip.getId(), Toast.LENGTH_SHORT).show();
-//                startActivity(intent);
                 Intent intent = TripNewActivity.newIntent(getActivity());
                 startActivity(intent);
             }
@@ -145,7 +139,6 @@ public class TripListFragment extends Fragment {
 
         @Override
         public void onBindViewHolder(TripHolder holder, int position) {
-
             Trip trip = mTrips.get(position);
             holder.bindTrip(trip);
         }

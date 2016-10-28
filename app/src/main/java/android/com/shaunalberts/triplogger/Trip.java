@@ -15,7 +15,7 @@ import java.util.UUID;
 public class Trip {
 
     private UUID mId;
-    private String title;
+    private String mTitle;
     private Date mDate;
     private int mTripType;//represents a int value from a list
     private String mDestination;
@@ -44,11 +44,11 @@ public class Trip {
     }
 
     public String getTitle() {
-        return title;
+        return mTitle;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setTitle(String mTitle) {
+        this.mTitle = mTitle;
     }
 
     public Date getDate() {
